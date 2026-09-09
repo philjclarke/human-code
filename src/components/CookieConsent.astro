@@ -1,0 +1,37 @@
+---
+/** Minimal analytics consent banner. Only rendered when GA is configured. */
+const id = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
+---
+{id && (
+  <div
+    id="consent"
+    class="fixed inset-x-4 bottom-4 z-50 hidden max-w-md rounded-2xl border border-line bg-ink p-5 text-paper shadow-lift-dark sm:left-auto sm:right-6 sm:bottom-6"
+    role="region"
+    aria-label="Cookie consent"
+  >
+    <p class="text-sm leading-relaxed text-paper/85">
+      We use Google Analytics to understand how people use this site so we can improve it. No cookies are set unless you accept.
+      <a href="/privacy/" class="underline decoration-peach underline-offset-2 hover:text-paper">Privacy</a>
+    </p>
+    <div class="mt-4 flex gap-2">
+      <button type="button" class="btn btn-peach px-5 py-2.5 text-sm" data-consent="granted">Accept</button>
+      <button type="button" class="btn btn-secondary px-5 py-2.5 text-sm" data-consent="denied">Decline</button>
+    </div>
+  </div>
+  <script>
+    const el = document.getElementById('consent');
+    let stored: string | null = null;
+    try { stored = localStorage.getItem('hc-consent'); } catch {}
+    if (el && !stored) el.classList.remove('hidden');
+    el?.querySelectorAll<HTMLButtonElement>('[data-consent]').forEach((b) => {
+      b.addEventListener('click', () => {
+        const v = b.dataset.consent!;
+        try { localStorage.setItem('hc-consent', v); } catch {}
+        if (typeof (window as any).gtag === 'function') {
+          (window as any).gtag('consent', 'update', { analytics_storage: v });
+        }
+        el.classList.add('hidden');
+      });
+    });
+  </script>
+)}

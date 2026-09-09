@@ -1,0 +1,121 @@
+---
+import Base from '@/layouts/Base.astro';
+import Band from '@/components/Band.astro';
+import Button from '@/components/Button.astro';
+import ArrowLink from '@/components/ArrowLink.astro';
+import SectionHead from '@/components/SectionHead.astro';
+import Reassurance from '@/components/Reassurance.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import Photo from '@/components/Photo.astro';
+import Icon from '@/components/Icon.astro';
+import { site, pricing } from '@/data/site';
+
+const issues = [
+  ['Teacher retention', 'Good teachers leaving for reasons that were about management, not money.'],
+  ['Support staff', 'The largest and most varied part of the workforce, and often the least well managed.'],
+  ['Leadership', 'Heads and SLT who want to lead on this with confidence rather than caution.'],
+  ['Performance', 'Clear expectations and clear support, without lowering the bar.'],
+  ['Staff wellbeing', 'Fewer avoidable pressures from mismatched communication, workload and change.'],
+  ['Difficult situations', 'Earlier, calmer conversations before things become formal.'],
+  ['Team working', 'Departments, phases and offices that understand how each other work.'],
+];
+
+const route = [
+  ['MAT CEO', 'Free 60-minute briefing', 'Understand the offer, apply it to the trust, decide.'],
+  ['Headteacher', '1 hour', 'Understand and lead, in every school.'],
+  ['SLT', '2 hours', 'Know what to do.'],
+  ['All staff', '2 hours', 'Work better together.'],
+];
+---
+<Base title="Schools & MATs" description="Better management for different brains in your school. How Human Code works for schools and multi-academy trusts, with every school receiving its own full programme.">
+  <Band tight>
+    <div class="grid gap-10 lg:grid-cols-12 lg:items-end">
+      <div class="lg:col-span-8">
+        <SectionHead
+          as="h1"
+          eyebrow="Schools and multi-academy trusts"
+          title="Better management for different brains in your school"
+          lede="Human Code is about your workforce: teachers, support staff and leaders. It is not a SEND programme and it is not about pupils. It is practical management training for the adults in the building."
+        />
+      </div>
+      <div class="reveal lg:col-span-4 lg:justify-self-end">
+        <Button href={site.cta.href} cta dot size="lg">{site.cta.short}</Button>
+      </div>
+    </div>
+  </Band>
+
+  <Band tight>
+    <Photo src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=2000&q=70" alt="School staff in a meeting" mono ratio="21 / 9" />
+  </Band>
+
+  <Band>
+    <SectionHead eyebrow="Workforce issues" title="The issues heads and trust leaders recognise" />
+    <div class="mt-12 grid gap-x-8 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
+      {issues.map(([t, b], i) => (
+        <div class="reveal border-t border-line pt-5" style={`transition-delay:${(i % 3) * 70}ms`}>
+          <h2 class="font-display text-2xl font-semibold">{t}</h2>
+          <p class="mt-2 text-ink-soft">{b}</p>
+        </div>
+      ))}
+    </div>
+  </Band>
+
+  <Band tone="dark">
+    <div class="grid gap-12 lg:grid-cols-12 lg:gap-8">
+      <div class="lg:col-span-5">
+        <SectionHead
+          eyebrow="The MAT route"
+          title="Every school gets its own full implementation"
+          lede="One briefing with the trust CEO. Then each school receives the complete Human Code cascade, pitched for its own headteacher, SLT and staff."
+        />
+      </div>
+      <ol class="lg:col-span-6 lg:col-start-7" role="list">
+        {route.map(([who, time, what], i) => (
+          <li class="reveal flex items-start gap-5 border-t border-line-dark py-5" style={`transition-delay:${i * 80}ms`}>
+            <span class="mt-1 flex size-8 flex-none items-center justify-center rounded-full bg-peach text-ink"><Icon name="arrow-right" class="size-3.5" /></span>
+            <div class="flex-1">
+              <div class="flex flex-wrap items-baseline justify-between gap-2">
+                <p class="font-display text-2xl font-semibold">{who}</p>
+                <p class="eyebrow">{time}</p>
+              </div>
+              <p class="mt-1 text-paper/70">{what}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </Band>
+
+  <Band>
+    <div class="grid gap-12 lg:grid-cols-12 lg:gap-8">
+      <div class="lg:col-span-6">
+        <SectionHead
+          eyebrow="Pricing for trusts"
+          title="Priced per school"
+          lede={`First school ${pricing.online.display} live online, additional schools ${pricing.multiSite.display} each, plus VAT. Face-to-face delivery is ${pricing.faceToFace.display} per school. We agree the rollout across your trust during the CEO briefing.`}
+        />
+        <div class="mt-8 flex flex-wrap gap-x-10 gap-y-4">
+          <ArrowLink href="/pricing/">Full pricing</ArrowLink>
+          <ArrowLink href="/what-to-expect/">What staff will be told</ArrowLink>
+        </div>
+      </div>
+      <div class="card card-peach reveal lg:col-span-5 lg:col-start-8" style="transition-delay:120ms">
+        <p class="eyebrow text-ink/70">Why teachers deliver Human Code</p>
+        <p class="mt-4 font-display text-display-sm font-semibold">Written and delivered by people who understand schools</p>
+        <p class="mt-4 text-ink/85">Human Code trainers are experienced teachers and coaches. They understand term-time pressures, INSET days, SLT dynamics and the difference between a good staff meeting and a wasted one.</p>
+      </div>
+    </div>
+  </Band>
+
+  <Band tone="paper2">
+    <Reassurance heading="No labels. No forced disclosure. No pupils." eyebrow="For your staff" statements={[
+      'Nobody is asked to disclose a diagnosis.',
+      'Nobody is taught to diagnose colleagues, or pupils.',
+      'Nobody becomes a case study.',
+      'Understanding difference does not mean lowering standards.',
+      'It is practical management training for every adult in the school.',
+    ]} />
+  </Band>
+
+  <CtaBand tone="dark" title="Book your free 60-minute CEO briefing" body="For trust CEOs and headteachers. Twenty minutes of briefing, thirty applied to your schools, ten to decide." />
+</Base>

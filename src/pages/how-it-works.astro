@@ -1,0 +1,126 @@
+---
+import Base from '@/layouts/Base.astro';
+import Band from '@/components/Band.astro';
+import Button from '@/components/Button.astro';
+import ArrowLink from '@/components/ArrowLink.astro';
+import SectionHead from '@/components/SectionHead.astro';
+import Cascade from '@/components/Cascade.astro';
+import PricingCards from '@/components/PricingCards.astro';
+import Reassurance from '@/components/Reassurance.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import Photo from '@/components/Photo.astro';
+import { site } from '@/data/site';
+
+const briefing = [
+  { time: 'First 20 minutes', title: 'The Human Code briefing', body: 'The key facts about neurodiversity at work, what it means for management and performance, and how the Human Code approach works.' },
+  { time: 'Next 30 minutes', title: 'Applied to your organisation', body: 'Your people challenges, performance, management, retention, staffing and difficult situations. What Human Code thinking would change.' },
+  { time: 'Final 10 minutes', title: 'Recommendation', body: 'A clear recommendation on whether Human Code is right for you, and if it is, a delivery date and an invoice. Nothing else to arrange.' },
+];
+---
+<Base title="How Human Code works" description="Leaders understand. Managers act. Teams work better together. The three-stage Human Code programme, what happens at each stage, and how it is delivered.">
+  <Band tight>
+    <div class="grid gap-10 lg:grid-cols-12 lg:items-end">
+      <div class="lg:col-span-8">
+        <SectionHead
+          as="h1"
+          eyebrow="How it works"
+          title="Leaders understand. Managers act. Teams work better together"
+          lede="Human Code is a three-stage cascade. Each stage is pitched for its audience, and each builds on the one before it, so the whole organisation ends up on the same page."
+        />
+      </div>
+      <div class="reveal lg:col-span-4 lg:justify-self-end">
+        <Button href={site.cta.href} cta dot size="lg">{site.cta.short}</Button>
+      </div>
+    </div>
+  </Band>
+
+  <Band tight>
+    <Cascade detailed />
+  </Band>
+
+  <Band tone="dark">
+    <div class="grid gap-12 lg:grid-cols-12 lg:gap-8">
+      <div class="lg:col-span-5">
+        <SectionHead
+          eyebrow="Delivery"
+          title="Two ways to deliver the same programme"
+          lede="Live online is the standard Human Code programme. Face-to-face is the same programme, delivered in person at your organisation. Choose whichever suits how your people work."
+        />
+      </div>
+      <div class="grid gap-5 sm:grid-cols-2 lg:col-span-7">
+        <div class="card reveal">
+          <p class="eyebrow">Live online</p>
+          <p class="mt-3 font-display text-display-sm font-semibold">Maximum convenience</p>
+          <p class="mt-3 text-ink-soft">Delivered live by a Human Code trainer over video. Sessions are scheduled around your organisation, with no travel and no venue to book. Ideal for multi-site organisations.</p>
+        </div>
+        <div class="card reveal" style="transition-delay:90ms">
+          <p class="eyebrow">Face-to-face</p>
+          <p class="mt-3 font-display text-display-sm font-semibold">In the room with you</p>
+          <p class="mt-3 text-ink-soft">The same programme delivered in person at your site. Choose this where being in the room matters to how your people learn and talk to one another.</p>
+        </div>
+      </div>
+    </div>
+  </Band>
+
+  <Band>
+    <SectionHead
+      eyebrow="Materials"
+      title="Access that lasts"
+      lede="Every organisation keeps access to its Human Code materials after delivery. The guide is designed as a practical, daily-use reference rather than a theory manual. When the programme or the law changes in a way that matters, we tell you."
+    />
+    <div class="mt-12 grid gap-5 sm:grid-cols-3">
+      {[
+        ['No subscription', 'One price, one programme. You keep the materials.'],
+        ['No consultancy dependency', 'Human Code is designed to leave your managers able to act, not needing us on call.'],
+        ['Updates when they matter', 'Major revisions and important legal changes are shared with previous customers.'],
+      ].map(([t, b], i) => (
+        <div class="reveal border-t border-line pt-5" style={`transition-delay:${i * 70}ms`}>
+          <h3 class="font-display text-2xl font-semibold">{t}</h3>
+          <p class="mt-2 text-ink-soft">{b}</p>
+        </div>
+      ))}
+    </div>
+  </Band>
+
+  <Band tone="paper2">
+    <div class="grid gap-12 lg:grid-cols-12 lg:gap-8">
+      <div class="lg:col-span-5">
+        <SectionHead
+          eyebrow="The first step"
+          title="Your free 60-minute CEO briefing"
+          lede="Genuinely useful in its own right. Designed so you can decide in an hour."
+        />
+        <div class="mt-8">
+          <Button href={site.cta.href} cta dot>{site.cta.short}</Button>
+        </div>
+      </div>
+      <ol class="lg:col-span-7" role="list">
+        {briefing.map((b, i) => (
+          <li class="reveal grid gap-2 border-t border-line py-6 sm:grid-cols-12 sm:gap-6" style={`transition-delay:${i * 80}ms`}>
+            <p class="eyebrow sm:col-span-4 sm:pt-1.5">{b.time}</p>
+            <div class="sm:col-span-8">
+              <h3 class="font-display text-2xl font-semibold">{b.title}</h3>
+              <p class="mt-2 text-ink-soft">{b.body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </Band>
+
+  <Band>
+    <Photo src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=2000&q=70" alt="A leadership team in discussion" mono ratio="21 / 9" />
+  </Band>
+
+  <Band tone="dark">
+    <Reassurance />
+  </Band>
+
+  <Band>
+    <SectionHead eyebrow="Pricing" title="Simple, visible pricing" />
+    <div class="mt-12"><PricingCards compact /></div>
+    <div class="mt-8"><ArrowLink href="/pricing/">Full pricing details</ArrowLink></div>
+  </Band>
+
+  <CtaBand />
+</Base>

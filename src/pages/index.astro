@@ -1,0 +1,256 @@
+---
+import Base from '@/layouts/Base.astro';
+import Band from '@/components/Band.astro';
+import Button from '@/components/Button.astro';
+import ArrowLink from '@/components/ArrowLink.astro';
+import SectionHead from '@/components/SectionHead.astro';
+import Cascade from '@/components/Cascade.astro';
+import PricingCards from '@/components/PricingCards.astro';
+import Reassurance from '@/components/Reassurance.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import Photo from '@/components/Photo.astro';
+import Icon from '@/components/Icon.astro';
+import { site, pricing } from '@/data/site';
+
+const credibility = [
+  {
+    title: 'Written by people who teach for a living',
+    body: 'Human Code was written by experienced teachers and coaches with a track record of making complicated subjects understandable. Their names, qualifications and background are on the About page.',
+    // TODO(client): confirm writers and qualifications.
+  },
+  {
+    title: 'Researched, referenced and reviewed',
+    body: 'The programme is evidence-informed and cites its sources. Content is reviewed on a set cycle and updated when the research or the law changes.',
+  },
+  {
+    title: 'Delivered by experienced teachers and coaches',
+    body: 'Every Human Code trainer is an experienced teacher or coach, trained and approved to deliver the same consistent programme.',
+  },
+  {
+    title: 'Practical before theoretical',
+    body: 'Enough theory to make sense of the subject, then straight to the question that matters: what should I actually do differently?',
+  },
+];
+
+const relief = [
+  'Short: one hour for leaders, two for managers, two for staff',
+  'Practical, built around real situations and real decisions',
+  'Whole organisation, so everyone hears the same thing',
+  'No long consultancy engagement',
+  'No subscription',
+  'No excessive theory',
+  'Ongoing access to Human Code materials',
+];
+
+const recognition = [
+  'Strong performance in some areas, not in others',
+  'Repeatedly missed deadlines',
+  'Struggles with sudden change',
+  'Communication that keeps going wrong',
+  'Meetings that go badly',
+  'Conflict that seems to come from nowhere',
+  'A capable person who leaves',
+  'Somebody who thrives on one project and struggles on the next',
+];
+
+const opportunity = [
+  { title: 'More confident managers', body: 'Managers who know what to do, and feel able to do it.' },
+  { title: 'Retain more good people', body: 'Fewer capable people walking out of the door for avoidable reasons.' },
+  { title: 'Improve individual performance', body: 'Clearer expectations, better support, higher standards.' },
+  { title: 'Build better teams', body: 'A shared language for how people work and communicate.' },
+  { title: 'Allocate work more intelligently', body: 'Put people where their strengths do the most good.' },
+  { title: 'Reduce avoidable conflict', body: 'Catch problems early, before they become grievances.' },
+];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'Human Code programme',
+    serviceType: 'Workplace management training',
+    provider: { '@type': 'Organization', name: site.name },
+    areaServed: 'GB',
+    description: site.description,
+    offers: [
+      { '@type': 'Offer', name: pricing.online.name, price: pricing.online.price, priceCurrency: 'GBP', description: pricing.online.summary },
+      { '@type': 'Offer', name: pricing.faceToFace.name, price: pricing.faceToFace.price, priceCurrency: 'GBP', description: pricing.faceToFace.summary },
+    ],
+  },
+];
+---
+<Base title={site.name} jsonLd={jsonLd}>
+  <!-- Hero ------------------------------------------------------------ -->
+  <section class="relative overflow-hidden bg-paper">
+    <div class="container-x grid gap-12 pb-14 pt-14 sm:pt-16 lg:grid-cols-12 lg:items-center lg:gap-8 lg:pb-16 lg:pt-20">
+      <div class="lg:col-span-8">
+        <p class="eyebrow mb-6">Practical neurodiversity training for organisations</p>
+        <h1 class="text-display-xl dot max-w-[17ch]">Better management for different brains</h1>
+        <p class="lede mt-8 max-w-[36rem] text-ink-soft">
+          {site.description}
+        </p>
+        <div class="mt-10 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-6">
+          <Button href={site.cta.href} cta dot size="lg">{site.cta.long}</Button>
+          <ArrowLink href="/how-it-works/">See how Human Code works</ArrowLink>
+        </div>
+      </div>
+
+      <aside class="lift rounded-2xl border border-line bg-white/60 p-6 sm:p-7 lg:col-span-4" aria-label="Pricing summary">
+        <p class="eyebrow">Complete programme, up to 100 staff</p>
+        <dl class="mt-5 divide-y divide-line">
+          <div class="flex items-baseline justify-between py-3">
+            <dt class="font-medium">Live online</dt>
+            <dd class="font-display text-3xl font-semibold">{pricing.online.display}</dd>
+          </div>
+          <div class="flex items-baseline justify-between py-3">
+            <dt class="font-medium">Face-to-face</dt>
+            <dd class="font-display text-3xl font-semibold">{pricing.faceToFace.display}</dd>
+          </div>
+        </dl>
+        <p class="mt-3 text-sm text-mute">Per organisation or site. Additional online sites {pricing.multiSite.display}. {pricing.vatNote}</p>
+        <ArrowLink href="/pricing/" class="mt-5">See pricing</ArrowLink>
+      </aside>
+    </div>
+
+    <div class="container-x pb-4">
+      <Photo
+        src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=2000&q=70"
+        alt="Colleagues working together around a table"
+        mono
+        ratio="21 / 9"
+        loading="eager"
+      />
+    </div>
+  </section>
+
+  <!-- Credibility (Confidence) --------------------------------------- -->
+  <Band>
+    <SectionHead
+      eyebrow="Why trust Human Code"
+      title="Complex subject. Clear, practical training"
+      lede="Neurodiversity is a big topic. Managing people well is not complicated. Human Code makes the first understandable so you can get on with the second."
+    />
+    <div class="mt-14 grid gap-5 sm:grid-cols-2">
+      {credibility.map((c, i) => (
+        <div class="card reveal" style={`transition-delay:${i * 70}ms`}>
+          <span class="mb-6 block size-2.5 rounded-full bg-peach" aria-hidden="true"></span>
+          <h3 class="font-display text-2xl font-semibold leading-tight">{c.title}</h3>
+          <p class="mt-3 text-ink-soft">{c.body}</p>
+        </div>
+      ))}
+    </div>
+    <div class="mt-10 flex flex-wrap gap-x-10 gap-y-4">
+      <ArrowLink href="/about/">Who wrote Human Code</ArrowLink>
+      <ArrowLink href="/trainers/">Meet the trainers</ArrowLink>
+    </div>
+  </Band>
+
+  <!-- Relief ----------------------------------------------------------- -->
+  <Band tone="dark">
+    <div class="grid gap-12 lg:grid-cols-12 lg:gap-8">
+      <div class="lg:col-span-6">
+        <SectionHead
+          eyebrow="Relief"
+          title="You don’t need to become a neurodiversity expert"
+          lede="You need managers who know what to do on Monday morning. Human Code is short, practical and covers the whole organisation. Then it gets out of the way."
+        />
+      </div>
+      <ul class="reveal lg:col-span-5 lg:col-start-8" role="list" style="transition-delay:120ms">
+        {relief.map((r) => (
+          <li class="flex items-center gap-4 border-t border-line-dark py-4 text-lg">
+            <Icon name="check" class="size-5 flex-none text-peach" />
+            {r}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </Band>
+
+  <!-- Recognition ------------------------------------------------------ -->
+  <Band>
+    <div class="grid gap-12 lg:grid-cols-12 lg:gap-8">
+      <div class="lg:col-span-7">
+        <SectionHead
+          eyebrow="Recognition"
+          title="Ever had someone who is clearly capable, but somehow difficult to manage?"
+          size="lg"
+          dot={false}
+        />
+        <p class="reveal mt-10 font-display text-display-sm font-medium text-ink-soft" style="transition-delay:100ms">
+          Different people do not always respond to the same management. Most of the time the fix is small. You just need to know what it is.
+        </p>
+      </div>
+      <ul class="reveal grid gap-3 sm:grid-cols-2 lg:col-span-5 lg:col-start-8" role="list" style="transition-delay:160ms">
+        {recognition.map((r) => (
+          <li class="lift rounded-xl border border-line bg-white/50 px-5 py-4 text-[0.97rem] font-medium">{r}</li>
+        ))}
+      </ul>
+    </div>
+  </Band>
+
+  <!-- Opportunity ------------------------------------------------------ -->
+  <Band tone="paper2">
+    <div class="grid gap-10 lg:grid-cols-12 lg:gap-8">
+      <div class="lg:col-span-4">
+        <SectionHead
+          eyebrow="Opportunity"
+          title="Small changes can unlock better performance"
+          lede="Understand people better. Manage them better. Get more from the people you already have."
+        />
+        <div class="mt-8">
+          <ArrowLink href="/for-leaders/">What this means for leaders</ArrowLink>
+        </div>
+      </div>
+      <div class="grid gap-x-8 gap-y-8 sm:grid-cols-2 lg:col-span-8">
+        {opportunity.map((o, i) => (
+          <div class="reveal border-t border-line pt-5" style={`transition-delay:${i * 60}ms`}>
+            <h3 class="font-display text-xl font-semibold sm:text-2xl">{o.title}</h3>
+            <p class="mt-2 text-ink-soft">{o.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+    <div class="mt-16 grid gap-5 sm:grid-cols-3">
+      <Photo src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=900&q=70" alt="Two colleagues in conversation at a desk" ratio="4 / 3" />
+      <Photo src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=900&q=70" alt="A manager talking with a small team" ratio="4 / 3" />
+      <Photo src="https://images.unsplash.com/photo-1531545514256-b1400bc00f31?auto=format&fit=crop&w=900&q=70" alt="Colleagues discussing work" ratio="4 / 3" />
+    </div>
+  </Band>
+
+  <!-- Cascade ---------------------------------------------------------- -->
+  <Band>
+    <SectionHead
+      eyebrow="The programme"
+      title="One organisation. Three conversations. One better way of working together"
+      lede="Leaders understand, managers act, teams work better together. Everyone hears the same thing, pitched for their role."
+    />
+    <div class="mt-14">
+      <Cascade />
+    </div>
+    <div class="mt-10">
+      <ArrowLink href="/how-it-works/">How Human Code works in detail</ArrowLink>
+    </div>
+  </Band>
+
+  <!-- Reassurance ------------------------------------------------------ -->
+  <Band tone="dark">
+    <Reassurance />
+    <div class="mt-10">
+      <ArrowLink href="/what-to-expect/">What to expect if you’re attending</ArrowLink>
+    </div>
+  </Band>
+
+  <!-- Pricing ---------------------------------------------------------- -->
+  <Band id="pricing">
+    <SectionHead
+      eyebrow="Pricing"
+      title="One price. Everything included"
+      lede="Choose live online delivery for maximum convenience, or face-to-face where you want Human Code delivered in person at your organisation."
+    />
+    <div class="mt-14">
+      <PricingCards />
+    </div>
+    <p class="mt-6 text-sm text-mute">{pricing.vatNote}</p>
+  </Band>
+
+  <CtaBand />
+</Base>

@@ -1,0 +1,65 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '@/layouts/Base.astro';
+import Band from '@/components/Band.astro';
+import SectionHead from '@/components/SectionHead.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import Photo from '@/components/Photo.astro';
+
+const trainers = (await getCollection('trainers')).sort((a, b) => a.data.order - b.data.order);
+const rendered = await Promise.all(trainers.map(async (t) => ({ ...t, Content: (await render(t)).Content })));
+---
+<Base title="Trainers" description="Human Code is delivered by experienced teachers and coaches, trained and approved to deliver one consistent programme.">
+  <Band tight>
+    <SectionHead
+      as="h1"
+      eyebrow="Trainers"
+      title="Experienced teachers and coaches. One consistent programme"
+      lede="Human Code trainers are not clinicians or psychologists, and we don’t pretend they are. They are experienced teachers and coaches who know how to make a complex subject clear and get a room of busy adults to do something differently."
+      class="max-w-4xl"
+    />
+  </Band>
+
+  <Band tight>
+    <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      {rendered.map((t, i) => (
+        <article class="card reveal flex flex-col" style={`transition-delay:${(i % 3) * 80}ms`}>
+          <Photo src={t.data.photo ?? 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=70'} alt={`Portrait of ${t.data.name}`} ratio="4 / 5" class="mb-6" />
+          <p class="eyebrow">{t.data.role}</p>
+          <h2 class="mt-2 font-display text-2xl font-semibold">{t.data.name}</h2>
+          <div class="prose-hc prose-base mt-3 text-ink-soft"><t.Content /></div>
+          <dl class="mt-5 space-y-3 text-[0.95rem]">
+            <div><dt class="eyebrow">Teaching</dt><dd class="mt-1 text-ink-soft">{t.data.teaching}</dd></div>
+            <div><dt class="eyebrow">Coaching</dt><dd class="mt-1 text-ink-soft">{t.data.coaching}</dd></div>
+            {t.data.send && <div><dt class="eyebrow">SEND experience</dt><dd class="mt-1 text-ink-soft">{t.data.send}</dd></div>}
+          </dl>
+          {t.data.qualifications.length > 0 && (
+            <ul class="mt-5 flex flex-wrap gap-2">
+              {t.data.qualifications.map((q) => <li class="rounded-full border border-line px-3 py-1 text-xs font-medium text-ink-soft">{q}</li>)}
+            </ul>
+          )}
+          <p class="mt-auto flex items-center gap-2 pt-6 text-sm font-semibold"><span class="size-2 rounded-full bg-peach" aria-hidden="true"></span>{t.data.approved}</p>
+          {t.data.placeholder && <p class="mt-3 text-xs text-mute">Placeholder profile. To be replaced with a real trainer.</p>}
+        </article>
+      ))}
+    </div>
+  </Band>
+
+  <Band tone="dark">
+    <SectionHead eyebrow="Quality assurance" title="How we keep Human Code consistent" />
+    <div class="mt-12 grid gap-x-8 gap-y-8 md:grid-cols-3">
+      {[
+        ['Trained and approved', 'Every trainer completes Human Code training and is approved before delivering to a customer.'],
+        ['Same materials, same principles', 'Trainers deliver the same programme with the same materials. No diagnosis, no compulsory disclosure, no lowering of standards.'],
+        ['Reviewed and fed back', 'Delivery is reviewed and feedback is collected from every session, so the programme keeps improving.'],
+      ].map(([t, b], i) => (
+        <div class="reveal border-t border-line-dark pt-5" style={`transition-delay:${i * 80}ms`}>
+          <h3 class="font-display text-2xl font-semibold">{t}</h3>
+          <p class="mt-2 text-paper/70">{b}</p>
+        </div>
+      ))}
+    </div>
+  </Band>
+
+  <CtaBand />
+</Base>

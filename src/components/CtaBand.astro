@@ -1,0 +1,27 @@
+---
+/** Closing conversion band. One CTA, always the briefing. */
+import Button from './Button.astro';
+import ArrowLink from './ArrowLink.astro';
+import { site, pricing } from '@/data/site';
+interface Props { title?: string; body?: string; tone?: 'dark' | 'peach' | 'light' }
+const {
+  title = 'See the price. Book the briefing. Decide in an hour.',
+  body = `The full programme is ${pricing.online.display} live online or ${pricing.faceToFace.display} face-to-face, plus VAT, for an organisation of up to 100 people. Your free 60-minute CEO briefing is useful whether or not you go ahead.`,
+  tone = 'peach',
+} = Astro.props;
+const tones = { dark: 'dark-band', peach: 'bg-peach text-ink', light: 'bg-paper-2 text-ink' };
+---
+<section class={`${tones[tone]} band`}>
+  <div class="container-x">
+    <div class="grid items-end gap-10 lg:grid-cols-12">
+      <div class="reveal lg:col-span-7">
+        <h2 class="text-display-lg max-w-[16ch]">{title}</h2>
+        <p class:list={['lede mt-6', tone === 'peach' && 'text-ink/80']}>{body}</p>
+      </div>
+      <div class="reveal flex flex-col items-start gap-5 lg:col-span-4 lg:col-start-9" style="transition-delay:120ms">
+        <Button href={site.cta.href} cta dot size="lg" variant="primary">{site.cta.long}</Button>
+        <ArrowLink href="/pricing/" class:list={[tone === 'peach' && 'text-ink']}>See pricing</ArrowLink>
+      </div>
+    </div>
+  </div>
+</section>

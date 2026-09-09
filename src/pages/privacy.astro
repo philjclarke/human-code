@@ -1,0 +1,55 @@
+---
+import Base from '@/layouts/Base.astro';
+import Band from '@/components/Band.astro';
+import { site } from '@/data/site';
+const updated = '9 September 2026';
+---
+<Base title="Privacy policy" description="How Human Code collects, uses and protects personal information.">
+  <Band tight>
+    <div class="max-w-3xl">
+      <p class="eyebrow mb-4">Privacy policy</p>
+      <h1 class="text-display-lg dot">How we handle your information</h1>
+      <p class="lede mt-6">We collect as little as we can, use it only to do what you asked, and never sell it. Last updated {updated}.</p>
+    </div>
+  </Band>
+  <Band tight>
+    <div class="prose-hc max-w-3xl">
+      <!-- TODO(client): have this reviewed and confirm legal entity, ICO registration and contact details. -->
+      <h2>Who we are</h2>
+      <p>{site.legalName} (“Human Code”, “we”, “us”) is the data controller for personal information collected through this website. {site.registeredAddress}. Company number {site.companyNumber}. You can contact us about privacy at <a href={`mailto:${site.email}`}>{site.email}</a>.</p>
+
+      <h2>What we collect and why</h2>
+      <h3>When you book a CEO briefing</h3>
+      <p>We ask for your name, job title, organisation, email address, phone number, the approximate number of employees and sites, your sector, and anything you would like to discuss. We use this to arrange and prepare for your briefing, to follow up afterwards, and, if you go ahead, to deliver the programme and invoice you. Our lawful basis is taking steps at your request before entering into a contract, and our legitimate interest in running our business.</p>
+      <p>Booking requests are sent to us by email and stored in our booking records. We keep them for as long as we have a business relationship with you, and for up to two years after our last contact if you do not go ahead.</p>
+
+      <h3>When you email or call us</h3>
+      <p>We keep correspondence for as long as needed to deal with your enquiry and any follow-up.</p>
+
+      <h3>Website analytics</h3>
+      <p>With your consent, we use Google Analytics 4 to understand how people use this site, for example which pages lead to briefing bookings. Analytics cookies are only set if you accept them in the banner. IP addresses are anonymised. You can withdraw consent at any time by clearing your browser’s site data for this website, after which the banner will ask again. Google’s privacy information is at <a href="https://policies.google.com/privacy" rel="noopener">policies.google.com/privacy</a>.</p>
+
+      <h3>Fonts</h3>
+      <p>This site loads its typefaces from Adobe Fonts. When a page loads, your browser requests the font files from Adobe, which may record your IP address and the site you visited. Adobe’s privacy information is at <a href="https://www.adobe.com/privacy/policies/adobe-fonts.html" rel="noopener">adobe.com/privacy</a>.</p>
+
+      <h2>What we do not do</h2>
+      <ul>
+        <li>We do not sell or rent personal information.</li>
+        <li>We do not use your information for advertising.</li>
+        <li>We do not ask anyone attending Human Code to disclose a diagnosis or any medical information, and we do not record such information about participants.</li>
+      </ul>
+
+      <h2>Who we share information with</h2>
+      <p>We use trusted service providers to run this website and our business: hosting (Vercel), email delivery (Resend), analytics (Google) and fonts (Adobe). They process information only on our instructions. Some providers are outside the UK; where that is the case, transfers are covered by appropriate safeguards such as the UK International Data Transfer Agreement or the UK Addendum to the EU Standard Contractual Clauses.</p>
+
+      <h2>Your rights</h2>
+      <p>Under UK data protection law you can ask us for a copy of the personal information we hold about you, ask us to correct or delete it, object to or restrict how we use it, and ask for it in a portable format. To exercise any of these rights, email <a href={`mailto:${site.email}`}>{site.email}</a>. You can also complain to the Information Commissioner’s Office at <a href="https://ico.org.uk" rel="noopener">ico.org.uk</a>.</p>
+
+      <h2>Security</h2>
+      <p>This site is served over HTTPS. Booking information is transmitted and stored using providers with appropriate technical and organisational security measures. No method of transmission is completely secure, and we cannot guarantee absolute security.</p>
+
+      <h2>Changes to this policy</h2>
+      <p>We will update this page when our practices change and update the date at the top.</p>
+    </div>
+  </Band>
+</Base>

@@ -1,0 +1,43 @@
+---
+/**
+ * GA4 with Google Consent Mode v2. Nothing loads unless PUBLIC_GA_MEASUREMENT_ID is set.
+ * Consent defaults to denied; the banner grants analytics_storage on accept.
+ */
+const id = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
+---
+{id && (
+  <>
+    <script is:inline define:vars={{ id }}>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){ dataLayer.push(arguments); }
+      window.gtag = gtag;
+      gtag('consent', 'default', {
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        analytics_storage: 'denied',
+        wait_for_update: 500,
+      });
+      try {
+        if (localStorage.getItem('hc-consent') === 'granted') {
+          gtag('consent', 'update', { analytics_storage: 'granted' });
+        }
+      } catch (e) {}
+      gtag('js', new Date());
+      gtag('config', id, { anonymize_ip: true });
+      window.__hcGaId = id;
+    </script>
+    <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${id}`}></script>
+  </>
+)}
+<script>
+  // Funnel events: every briefing CTA click carries the page it came from.
+  document.addEventListener('click', (e) => {
+    const target = (e.target as HTMLElement).closest<HTMLElement>('[data-cta="briefing"]');
+    if (!target || typeof (window as any).gtag !== 'function') return;
+    (window as any).gtag('event', 'briefing_cta_click', {
+      page_path: location.pathname,
+      cta_text: target.textContent?.trim().slice(0, 80),
+    });
+  });
+</script>

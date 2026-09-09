@@ -1,0 +1,20 @@
+---
+/** Eyebrow + display heading + optional lede, used at the top of most bands. */
+interface Props {
+  eyebrow?: string;
+  title: string;
+  lede?: string;
+  size?: 'lg' | 'md';
+  align?: 'left' | 'center';
+  as?: 'h1' | 'h2';
+  dot?: boolean;
+  class?: string;
+}
+const { eyebrow, title, lede, size = 'lg', align = 'left', as: Tag = 'h2', dot = true, class: className = '' } = Astro.props;
+---
+<div class={`reveal ${align === 'center' ? 'mx-auto text-center' : ''} ${className}`}>
+  {eyebrow && <p class="eyebrow mb-4">{eyebrow}</p>}
+  <Tag class={`${size === 'lg' ? 'text-display-lg' : 'text-display-md'} ${dot ? 'dot' : ''} max-w-[18ch]`} class:list={[align === 'center' && 'mx-auto']}>{title}</Tag>
+  {lede && <p class={`lede mt-6 ${align === 'center' ? 'mx-auto' : ''}`}>{lede}</p>}
+  <slot />
+</div>

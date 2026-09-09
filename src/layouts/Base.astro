@@ -1,0 +1,99 @@
+---
+import '@/styles/global.css';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import Analytics from '@/components/Analytics.astro';
+import CookieConsent from '@/components/CookieConsent.astro';
+import { site } from '@/data/site';
+
+interface Props {
+  title: string;
+  description?: string;
+  /** Path to an OG image, absolute or site-relative. */
+  image?: string;
+  noindex?: boolean;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  bodyClass?: string;
+}
+
+const {
+  title,
+  description = site.description,
+  image = '/og.png',
+  noindex = false,
+  jsonLd,
+  bodyClass = '',
+} = Astro.props;
+
+const fullTitle = title === site.name ? `${site.name} | ${site.tagline}` : `${title} | ${site.name}`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL(image, Astro.site);
+
+const org = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: site.name,
+  url: Astro.site?.toString(),
+  logo: new URL('/brand/wordmark.svg', Astro.site).toString(),
+  email: site.email,
+  telephone: site.phone,
+  slogan: site.tagline,
+  description: site.description,
+};
+const ld = [org, ...(jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [])];
+---
+<html lang="en-GB" class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta name="theme-color" content="#f4f2ed" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content="en_GB" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="preconnect" href="https://use.typekit.net" crossorigin />
+    <link rel="stylesheet" href="https://use.typekit.net/slg7jgv.css" />
+
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(ld)} />
+    <Analytics />
+  </head>
+  <body class:list={['flex min-h-screen flex-col', bodyClass]}>
+    <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-paper">Skip to content</a>
+    <Header />
+    <main id="main" class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+    <CookieConsent />
+
+    <script>
+      // Reveal-on-scroll. Elements with .reveal fade up once as they enter view.
+      const els = document.querySelectorAll<HTMLElement>('.reveal');
+      if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        els.forEach((el) => el.classList.add('is-in'));
+      } else {
+        const io = new IntersectionObserver(
+          (entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }),
+          { rootMargin: '0px 0px -8% 0px', threshold: 0.08 },
+        );
+        els.forEach((el) => io.observe(el));
+      }
+    </script>
+  </body>
+</html>

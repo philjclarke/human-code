@@ -1,0 +1,9 @@
+---
+import Icon from './Icon.astro';
+interface Props { href: string; class?: string; cta?: boolean }
+const { href, class: className = '', cta = false } = Astro.props;
+---
+<a href={href} class={`arrow-link ${className}`} {...(cta ? { 'data-cta': 'briefing' } : {})}>
+  <slot />
+  <Icon name="arrow" class="size-3.5" />
+</a>

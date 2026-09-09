@@ -1,0 +1,38 @@
+---
+import Button from './Button.astro';
+import Icon from './Icon.astro';
+import { pricing, site } from '@/data/site';
+interface Props { compact?: boolean }
+const { compact = false } = Astro.props;
+const cards = [pricing.online, pricing.faceToFace];
+---
+<div class="grid gap-5 lg:grid-cols-12">
+  {cards.map((p, i) => (
+    <div class:list={['card reveal flex flex-col lg:col-span-4', i === 0 && 'lg:col-span-5', i === 1 && 'lg:col-span-4']} style={`transition-delay:${i * 90}ms`}>
+      <p class="eyebrow">{p.name}</p>
+      <p class="mt-4 flex items-baseline gap-2">
+        <span class="font-display text-display-md font-semibold">{p.display}</span>
+        <span class="text-sm text-mute">+ VAT</span>
+      </p>
+      <p class="mt-1 text-sm text-mute">{p.unit}</p>
+      <p class="mt-5 text-ink-soft">{p.summary}</p>
+      {!compact && (
+        <ul class="mt-6 space-y-2.5 text-[0.95rem]">
+          {p.includes.map((inc) => (
+            <li class="flex items-center gap-2.5"><Icon name="check" class="size-4 text-peach-deep" />{inc}</li>
+          ))}
+        </ul>
+      )}
+      <div class="mt-auto pt-8">
+        <Button href={site.cta.href} cta dot variant={i === 0 ? 'primary' : 'secondary'} class="w-full">{site.cta.short}</Button>
+      </div>
+    </div>
+  ))}
+  <div class="card card-peach reveal flex flex-col lg:col-span-3" style="transition-delay:180ms">
+    <p class="eyebrow text-ink/70">Multi-site</p>
+    <p class="mt-4 font-display text-display-sm font-semibold">Additional online sites {pricing.multiSite.display}</p>
+    <p class="mt-1 text-sm text-ink/70">{pricing.multiSite.unit}, + VAT</p>
+    <p class="mt-5 text-ink/85">{pricing.multiSite.summary}</p>
+    <p class="mt-auto pt-8 text-sm text-ink/70">Schools, offices, care homes, depots, branches and separate operational sites each count as a site.</p>
+  </div>
+</div>

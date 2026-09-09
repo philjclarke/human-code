@@ -1,0 +1,27 @@
+---
+import Base from '@/layouts/Base.astro';
+import Band from '@/components/Band.astro';
+import ArrowLink from '@/components/ArrowLink.astro';
+---
+<Base title="Thank you" description="Your CEO briefing request has been received." noindex>
+  <Band>
+    <div class="max-w-3xl">
+      <p class="eyebrow mb-4">Request received</p>
+      <h1 class="text-display-lg dot">Thank you</h1>
+      <p class="lede mt-6">We will be in touch within one working day to arrange your free 60-minute CEO briefing. You should receive a confirmation email shortly.</p>
+      <p class="mt-6 text-ink-soft">In the meantime, these might be useful:</p>
+      <div class="mt-6 flex flex-wrap gap-x-10 gap-y-4">
+        <ArrowLink href="/how-it-works/">How Human Code works</ArrowLink>
+        <ArrowLink href="/what-to-expect/">What your staff will be told</ArrowLink>
+        <ArrowLink href="/knowledge/">Knowledge Hub</ArrowLink>
+      </div>
+    </div>
+  </Band>
+</Base>
+
+<script>
+  // GA4 conversion for the funnel: briefing requested.
+  if (typeof (window as any).gtag === 'function') {
+    (window as any).gtag('event', 'briefing_requested', { page_path: '/book/thanks/' });
+  }
+</script>

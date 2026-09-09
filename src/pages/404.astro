@@ -1,0 +1,19 @@
+---
+import Base from '@/layouts/Base.astro';
+import Band from '@/components/Band.astro';
+import ArrowLink from '@/components/ArrowLink.astro';
+---
+<Base title="Page not found" noindex>
+  <Band>
+    <div class="max-w-2xl">
+      <p class="eyebrow mb-4">404</p>
+      <h1 class="text-display-lg dot">That page isn’t here</h1>
+      <p class="lede mt-6">It may have moved, or the link may be wrong. These should get you back on track.</p>
+      <div class="mt-8 flex flex-wrap gap-x-10 gap-y-4">
+        <ArrowLink href="/">Home</ArrowLink>
+        <ArrowLink href="/how-it-works/">How it works</ArrowLink>
+        <ArrowLink href="/knowledge/">Knowledge Hub</ArrowLink>
+      </div>
+    </div>
+  </Band>
+</Base>

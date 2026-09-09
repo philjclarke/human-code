@@ -1,0 +1,44 @@
+---
+/**
+ * Button / link styled as a button.
+ * `cta` marks it as the primary conversion action for analytics.
+ */
+interface Props {
+  href?: string;
+  variant?: 'primary' | 'peach' | 'secondary';
+  size?: 'md' | 'lg';
+  class?: string;
+  cta?: boolean;
+  type?: 'button' | 'submit';
+  dot?: boolean;
+  [key: string]: unknown;
+}
+const {
+  href,
+  variant = 'primary',
+  size = 'md',
+  class: className = '',
+  cta = false,
+  type = 'button',
+  dot = false,
+  ...rest
+} = Astro.props;
+const classes = [
+  'btn',
+  `btn-${variant}`,
+  size === 'lg' ? 'px-7 py-4 text-base' : '',
+  className,
+].join(' ');
+const dataAttrs = cta ? { 'data-cta': 'briefing' } : {};
+---
+{href ? (
+  <a href={href} class={classes} {...dataAttrs} {...rest}>
+    {dot && <span class="dotmark" aria-hidden="true"></span>}
+    <slot />
+  </a>
+) : (
+  <button type={type} class={classes} {...dataAttrs} {...rest}>
+    {dot && <span class="dotmark" aria-hidden="true"></span>}
+    <slot />
+  </button>
+)}

@@ -1,0 +1,51 @@
+---
+import Wordmark from './Wordmark.astro';
+import Button from './Button.astro';
+import { nav, secondaryNav, site, pricing } from '@/data/site';
+const year = new Date().getFullYear();
+---
+<footer class="dark-band">
+  <div class="container-x">
+    <div class="grid gap-12 py-16 sm:py-20 lg:grid-cols-12 lg:gap-8">
+      <div class="lg:col-span-6">
+        <h2 class="text-display-lg dot max-w-[14ch] text-paper">Better management for different brains</h2>
+        <p class="lede mt-6 max-w-[34rem]">
+          The complete programme is {pricing.online.display} live online or {pricing.faceToFace.display} face-to-face for an organisation of up to 100 people, plus VAT. The first step costs nothing.
+        </p>
+        <div class="mt-8">
+          <Button href={site.cta.href} cta dot size="lg">{site.cta.long}</Button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-8 lg:col-span-5 lg:col-start-8">
+        <div>
+          <p class="eyebrow mb-4">Explore</p>
+          <ul class="space-y-2.5">
+            {nav.map((i) => <li><a class="text-paper/85 transition-colors hover:text-paper" href={i.href}>{i.label}</a></li>)}
+          </ul>
+        </div>
+        <div>
+          <p class="eyebrow mb-4">More</p>
+          <ul class="space-y-2.5">
+            {secondaryNav.map((i) => <li><a class="text-paper/85 transition-colors hover:text-paper" href={i.href}>{i.label}</a></li>)}
+            <li><a class="text-paper/85 transition-colors hover:text-paper" href={site.cta.href}>Book your CEO briefing</a></li>
+          </ul>
+        </div>
+        <div class="col-span-2 mt-2">
+          <p class="eyebrow mb-4">Contact</p>
+          <p class="text-paper/85">
+            <a href={`mailto:${site.email}`} class="hover:text-paper">{site.email}</a><br />
+            <a href={`tel:${site.phone.replace(/[^+\d]/g, '')}`} class="hover:text-paper">{site.phone}</a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-6 border-t border-line-dark py-8 text-sm text-paper/60 sm:flex-row sm:items-center sm:justify-between">
+      <Wordmark class="h-5 w-auto text-paper" />
+      <p class="max-w-xl">
+        &copy; {year} {site.legalName}. {site.registeredAddress}. Company no. {site.companyNumber}. {pricing.vatNote}
+      </p>
+    </div>
+  </div>
+</footer>

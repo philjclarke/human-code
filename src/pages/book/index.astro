@@ -1,0 +1,197 @@
+---
+import Base from '@/layouts/Base.astro';
+import Band from '@/components/Band.astro';
+import Button from '@/components/Button.astro';
+import Icon from '@/components/Icon.astro';
+import { site, pricing } from '@/data/site';
+import { sectors, staffBands, siteBands } from '@/lib/booking';
+
+const agenda = [
+  ['20 min', 'The Human Code briefing', 'The key facts, the approach, and what it means for management and performance.'],
+  ['30 min', 'Applied to your organisation', 'Your people challenges, performance, retention, staffing and difficult situations.'],
+  ['10 min', 'Recommendation', 'Whether Human Code is right for you. If it is, a delivery date and an invoice.'],
+];
+---
+<Base title="Book your free 60-minute CEO briefing" description="Book your free 60-minute CEO briefing. Twenty minutes of briefing, thirty minutes applied to your organisation, ten minutes to decide." noindex={false}>
+  <Band tight>
+    <div class="grid gap-12 lg:grid-cols-12 lg:gap-8">
+      <div class="lg:col-span-5">
+        <p class="eyebrow mb-4">Free. No obligation. Genuinely useful</p>
+        <h1 class="text-display-lg dot">Book your free <span class="whitespace-nowrap">60-minute</span> CEO briefing</h1>
+        <p class="lede mt-6">Tell us a little about your organisation and we will come back within one working day to arrange a time that suits you.</p>
+
+        <ol class="mt-10 divide-y divide-line border-y border-line" role="list">
+          {agenda.map(([t, h, b]) => (
+            <li class="grid gap-1 py-4 sm:grid-cols-12 sm:gap-4">
+              <p class="eyebrow sm:col-span-3 sm:pt-1">{t}</p>
+              <div class="sm:col-span-9">
+                <p class="font-display text-xl font-semibold">{h}</p>
+                <p class="mt-1 text-[0.95rem] text-ink-soft">{b}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+
+        <div class="mt-8 rounded-2xl bg-paper-2 p-6">
+          <p class="eyebrow">If you go ahead</p>
+          <p class="mt-3 font-display text-2xl font-semibold">{pricing.online.display} live online · {pricing.faceToFace.display} face-to-face</p>
+          <p class="mt-1 text-sm text-mute">Per organisation or site of up to 100 staff. {pricing.vatNote}</p>
+        </div>
+      </div>
+
+      <div class="lg:col-span-6 lg:col-start-7">
+        <form
+          id="booking"
+          class="card"
+          method="post"
+          action="/api/book"
+          novalidate
+          data-booking-form
+        >
+          <div id="form-error" class="mb-6 hidden rounded-xl border border-peach-deep bg-peach-soft px-4 py-3 text-sm" role="alert"></div>
+
+          <div class="grid gap-5 sm:grid-cols-2">
+            <div class="field">
+              <label for="name">Name</label>
+              <input id="name" name="name" type="text" autocomplete="name" required />
+            </div>
+            <div class="field">
+              <label for="jobTitle">Job title</label>
+              <input id="jobTitle" name="jobTitle" type="text" autocomplete="organization-title" required />
+            </div>
+            <div class="field sm:col-span-2">
+              <label for="organisation">Organisation</label>
+              <input id="organisation" name="organisation" type="text" autocomplete="organization" required />
+            </div>
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" autocomplete="email" inputmode="email" required />
+            </div>
+            <div class="field">
+              <label for="phone">Phone</label>
+              <input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required />
+            </div>
+            <div class="field">
+              <label for="staff">Number of employees</label>
+              <select id="staff" name="staff" required>
+                <option value="">Choose</option>
+                {staffBands.map((b) => <option value={b}>{b}</option>)}
+              </select>
+            </div>
+            <div class="field">
+              <label for="sites">Number of sites</label>
+              <select id="sites" name="sites" required>
+                <option value="">Choose</option>
+                {siteBands.map((b) => <option value={b}>{b}</option>)}
+              </select>
+              <p class="hint">Schools, offices, branches or other separate sites.</p>
+            </div>
+            <div class="field sm:col-span-2">
+              <label for="sector">Sector</label>
+              <select id="sector" name="sector" required>
+                <option value="">Choose</option>
+                {sectors.map((s) => <option value={s}>{s}</option>)}
+              </select>
+            </div>
+            <div class="field sm:col-span-2">
+              <label for="discuss">Anything you particularly want to discuss? <span class="font-normal text-mute">(optional)</span></label>
+              <textarea id="discuss" name="discuss" rows="4"></textarea>
+            </div>
+            <div class="field sm:col-span-2">
+              <label for="source">How did you hear about Human Code? <span class="font-normal text-mute">(optional)</span></label>
+              <input id="source" name="source" type="text" />
+            </div>
+          </div>
+
+          <!-- Honeypot. Hidden from people, tempting to bots. -->
+          <div class="absolute -left-[9999px] top-auto h-px w-px overflow-hidden" aria-hidden="true">
+            <label for="website">Website</label>
+            <input id="website" name="website" type="text" tabindex="-1" autocomplete="off" />
+          </div>
+          <input type="hidden" name="page" value="" data-page-field />
+
+          <div class="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <Button type="submit" variant="primary" dot size="lg" class="w-full sm:w-auto" data-submit>
+              <span data-label>Request my briefing</span>
+              <Icon name="arrow-right" class="size-4" />
+            </Button>
+            <p class="text-xs text-mute">We only use your details to arrange your briefing. <a href="/privacy/" class="underline underline-offset-2">Privacy</a></p>
+          </div>
+        </form>
+        <p class="mt-4 text-sm text-mute">Prefer to email? <a href={`mailto:${site.email}`} class="underline decoration-peach underline-offset-2">{site.email}</a></p>
+      </div>
+    </div>
+  </Band>
+</Base>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-booking-form]');
+  const errorBox = document.getElementById('form-error');
+  const submit = form?.querySelector<HTMLButtonElement>('[data-submit]');
+  const label = submit?.querySelector<HTMLElement>('[data-label]');
+  const pageField = form?.querySelector<HTMLInputElement>('[data-page-field]');
+
+  // Record where the visitor came from, for the funnel.
+  try {
+    const ref = sessionStorage.getItem('hc-from') || document.referrer;
+    if (pageField) pageField.value = ref ? new URL(ref, location.origin).pathname : '';
+  } catch {}
+
+  const params = new URLSearchParams(location.search);
+  if (params.get('error') && errorBox) {
+    errorBox.textContent = params.get('error') === 'delivery'
+      ? 'We could not send your request. Please try again or email us directly.'
+      : 'Please check the highlighted fields and try again.';
+    errorBox.classList.remove('hidden');
+  }
+
+  const showErrors = (errors: Record<string, string>) => {
+    form?.querySelectorAll('.field-error').forEach((e) => e.remove());
+    form?.querySelectorAll('[aria-invalid]').forEach((e) => e.removeAttribute('aria-invalid'));
+    let first: HTMLElement | null = null;
+    for (const [name, msg] of Object.entries(errors)) {
+      const input = form?.querySelector<HTMLElement>(`[name="${name}"]`);
+      if (!input) continue;
+      input.setAttribute('aria-invalid', 'true');
+      input.style.borderColor = '#e58a4d';
+      const p = document.createElement('p');
+      p.className = 'field-error mt-1.5 text-sm text-peach-deep';
+      p.textContent = msg;
+      input.insertAdjacentElement('afterend', p);
+      first ??= input;
+    }
+    first?.focus();
+  };
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    errorBox?.classList.add('hidden');
+    if (submit) submit.disabled = true;
+    if (label) label.textContent = 'Sending…';
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { Accept: 'application/json' },
+      });
+      const json = await res.json().catch(() => ({}));
+      if (res.ok && json.ok) {
+        location.assign(json.redirect || '/book/thanks/');
+        return;
+      }
+      if (json.errors) showErrors(json.errors);
+      if (errorBox) {
+        errorBox.textContent = json.message || 'Please check the highlighted fields and try again.';
+        errorBox.classList.remove('hidden');
+      }
+    } catch {
+      if (errorBox) {
+        errorBox.textContent = 'We could not send your request. Please try again or email us directly.';
+        errorBox.classList.remove('hidden');
+      }
+    } finally {
+      if (submit) submit.disabled = false;
+      if (label) label.textContent = 'Request my briefing';
+    }
+  });
+</script>

@@ -1,0 +1,127 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '@/layouts/Base.astro';
+import Band from '@/components/Band.astro';
+import Button from '@/components/Button.astro';
+import ArrowLink from '@/components/ArrowLink.astro';
+import ArticleCard from '@/components/ArticleCard.astro';
+import { categoryLabel, formatDate } from '@/lib/knowledge';
+import { site } from '@/data/site';
+
+export async function getStaticPaths() {
+  const articles = await getCollection('knowledge', ({ data }) => !data.draft);
+  return articles.map((article) => ({ params: { id: article.id }, props: { article } }));
+}
+
+const { article } = Astro.props;
+const { Content, headings } = await render(article);
+const d = article.data;
+const related = (await getCollection('knowledge', ({ data, id }) => !data.draft && data.category === d.category && id !== article.id)).slice(0, 2);
+const toc = headings.filter((h) => h.depth === 2);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: d.title,
+  description: d.summary,
+  author: { '@type': 'Organization', name: d.author },
+  ...(d.reviewer ? { reviewedBy: { '@type': 'Person', name: d.reviewer } } : {}),
+  publisher: { '@type': 'Organization', name: site.name },
+  datePublished: d.published.toISOString(),
+  dateModified: d.reviewed.toISOString(),
+  mainEntityOfPage: new URL(Astro.url.pathname, Astro.site).toString(),
+  citation: d.sources.map((s) => s.url),
+};
+---
+<Base title={d.title} description={d.summary} jsonLd={jsonLd}>
+  <article>
+    <Band tight>
+      <div class="max-w-4xl">
+        <p class="eyebrow mb-4"><a href={`/knowledge/#${d.category}`} class="hover:text-ink">{categoryLabel(d.category)}</a></p>
+        <h1 class="text-display-lg max-w-[18ch]">{d.title}</h1>
+        <p class="lede mt-6">{d.summary}</p>
+        <dl class="mt-8 flex flex-wrap gap-x-8 gap-y-2 text-sm text-mute">
+          <div class="flex gap-2"><dt class="font-semibold text-ink-soft">Author</dt><dd>{d.author}</dd></div>
+          {d.reviewer && <div class="flex gap-2"><dt class="font-semibold text-ink-soft">Reviewed by</dt><dd>{d.reviewer}</dd></div>}
+          <div class="flex gap-2"><dt class="font-semibold text-ink-soft">Last reviewed</dt><dd><time datetime={d.reviewed.toISOString()}>{formatDate(d.reviewed)}</time></dd></div>
+        </dl>
+      </div>
+    </Band>
+
+    <Band tight>
+      <div class="grid gap-12 lg:grid-cols-12">
+        <aside class="lg:col-span-3">
+          <div class="lg:sticky lg:top-28">
+            {toc.length > 0 && (
+              <nav aria-label="On this page">
+                <p class="eyebrow mb-4">On this page</p>
+                <ol class="space-y-2 border-l border-line text-sm">
+                  {toc.map((h) => <li><a href={`#${h.slug}`} class="-ml-px block border-l-2 border-transparent pl-4 text-ink-soft hover:border-peach hover:text-ink">{h.text}</a></li>)}
+                </ol>
+              </nav>
+            )}
+            <div class="card card-peach mt-10 hidden lg:block">
+              <p class="font-display text-xl font-semibold leading-snug">Human Code principle</p>
+              <p class="mt-3 text-ink/85">{d.principle}</p>
+            </div>
+          </div>
+        </aside>
+        <div class="lg:col-span-8 lg:col-start-5">
+          <div class="prose-hc">
+            <Content />
+          </div>
+
+          <aside class="mt-14 rounded-2xl bg-peach p-7 sm:p-8 lg:hidden">
+            <p class="font-display text-xl font-semibold">Human Code principle</p>
+            <p class="mt-3 text-ink/85">{d.principle}</p>
+          </aside>
+
+          {d.sources.length > 0 && (
+            <section class="mt-14 border-t border-line pt-8" aria-labelledby="sources">
+              <h2 id="sources" class="eyebrow">Sources</h2>
+              <ol class="mt-4 space-y-2 text-[0.95rem]">
+                {d.sources.map((s, i) => (
+                  <li class="flex gap-3">
+                    <span class="text-mute">{i + 1}.</span>
+                    <span>
+                      <a href={s.url} rel="noopener" target="_blank" class="underline decoration-peach underline-offset-2 hover:decoration-ink">{s.title}</a>
+                      {s.publisher && <span class="text-mute"> — {s.publisher}</span>}
+                    </span>
+                  </li>
+                ))}
+              </ol>
+            </section>
+          )}
+
+          <p class="mt-8 text-sm text-mute">
+            This article is general information, not medical or legal advice. Human Code does not teach anyone to diagnose colleagues. If you need advice on a specific situation, speak to HR, occupational health or a qualified professional.
+          </p>
+        </div>
+      </div>
+    </Band>
+
+    <Band tone="dark">
+      <div class="grid gap-10 lg:grid-cols-12 lg:items-end">
+        <div class="lg:col-span-8">
+          <h2 class="text-display-md max-w-[18ch]">Want to put this into practice across your organisation?</h2>
+          <p class="lede mt-5">Human Code turns the facts into practical management, from leaders to all staff, in five hours.</p>
+        </div>
+        <div class="lg:col-span-4 lg:justify-self-end">
+          <Button href={site.cta.href} cta dot size="lg">{site.cta.short}</Button>
+        </div>
+      </div>
+    </Band>
+
+    {related.length > 0 && (
+      <Band tight>
+        <div class="mb-6 flex items-baseline justify-between gap-6">
+          <p class="eyebrow">More in {categoryLabel(d.category)}</p>
+          <ArrowLink href="/knowledge/">All articles</ArrowLink>
+        </div>
+        <div class="grid gap-5 sm:grid-cols-2">
+          {related.map((a) => <ArticleCard article={a} />)}
+        </div>
+      </Band>
+    )}
+  </article>
+</Base>

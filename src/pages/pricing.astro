@@ -1,0 +1,83 @@
+---
+import Base from '@/layouts/Base.astro';
+import Band from '@/components/Band.astro';
+import Button from '@/components/Button.astro';
+import ArrowLink from '@/components/ArrowLink.astro';
+import SectionHead from '@/components/SectionHead.astro';
+import PricingCards from '@/components/PricingCards.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import { site, pricing } from '@/data/site';
+
+const steps = ['Understand the offer', 'See the price', 'Book your free CEO briefing', 'Attend the briefing', 'Agree delivery and book a date', 'Invoice sent'];
+---
+<Base title="Pricing" description={`Human Code Online is ${pricing.online.display} and Face-to-Face is ${pricing.faceToFace.display}, plus VAT, for an organisation or site of up to 100 staff. Additional online sites from £750.`}>
+  <Band tight>
+    <SectionHead
+      as="h1"
+      eyebrow="Pricing"
+      title="See the price. Book the briefing. Decide in an hour"
+      lede="One complete programme. Two ways to deliver it. No quotes, no proposals, no ‘contact us for pricing’."
+    />
+  </Band>
+
+  <Band tight>
+    <PricingCards />
+    <p class="mt-6 text-sm text-mute">{pricing.vatNote} Prices are per organisation or site of up to 100 staff.</p>
+  </Band>
+
+  <Band tone="dark">
+    <div class="grid gap-12 lg:grid-cols-12 lg:gap-8">
+      <div class="lg:col-span-6">
+        <SectionHead
+          eyebrow="Larger and multi-site organisations"
+          title="Organised around sites, not headcount"
+          lede="Human Code is delivered per site or unit: a school, an office, a care home, a depot, a branch. Each site gets its own full cascade so the people who work together are trained together."
+        />
+      </div>
+      <div class="reveal space-y-6 lg:col-span-5 lg:col-start-8" style="transition-delay:120ms">
+        <div class="border-t border-line-dark pt-5">
+          <p class="font-display text-2xl font-semibold">First site: {pricing.online.display} online</p>
+          <p class="mt-1 text-paper/70">Or {pricing.faceToFace.display} face-to-face. Up to 100 staff per site.</p>
+        </div>
+        <div class="border-t border-line-dark pt-5">
+          <p class="font-display text-2xl font-semibold">Additional online sites {pricing.multiSite.display}</p>
+          <p class="mt-1 text-paper/70">Each with its own leader briefing, leadership session and all-staff session.</p>
+        </div>
+        <div class="border-t border-line-dark pt-5">
+          <p class="font-display text-2xl font-semibold">Sites over 100 staff, or face-to-face rollouts</p>
+          <p class="mt-1 text-paper/70">We use your CEO briefing to agree the most sensible rollout. No separate quote process.</p>
+        </div>
+      </div>
+    </div>
+  </Band>
+
+  <Band>
+    <div class="grid gap-12 lg:grid-cols-12 lg:gap-8">
+      <div class="lg:col-span-5">
+        <SectionHead
+          eyebrow="How buying works"
+          title="Extremely simple to buy"
+          lede="Nobody should have to email us to find out the price."
+        />
+        <div class="mt-8"><Button href={site.cta.href} cta dot>{site.cta.short}</Button></div>
+      </div>
+      <ol class="lg:col-span-6 lg:col-start-7" role="list">
+        {steps.map((s, i) => (
+          <li class="reveal flex items-center gap-5 border-t border-line py-4" style={`transition-delay:${i * 60}ms`}>
+            <span class="font-display text-2xl font-semibold text-peach-deep">{String(i + 1).padStart(2, '0')}</span>
+            <span class="font-display text-xl font-medium">{s}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </Band>
+
+  <Band tone="paper2" tight>
+    <div class="flex flex-wrap items-center justify-between gap-6">
+      <p class="font-display text-display-sm font-medium">Schools and multi-academy trusts</p>
+      <ArrowLink href="/schools-and-mats/">How the MAT model works</ArrowLink>
+    </div>
+  </Band>
+
+  <CtaBand tone="dark" />
+</Base>

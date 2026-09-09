@@ -1,0 +1,38 @@
+---
+/** The three-stage programme cascade, as a simple numbered visual. */
+import { cascade } from '@/data/site';
+import Icon from './Icon.astro';
+interface Props { detailed?: boolean }
+const { detailed = false } = Astro.props;
+---
+<ol class="grid gap-5 lg:grid-cols-3" role="list">
+  {cascade.map((stage, i) => (
+    <li class="card reveal flex flex-col" style={`transition-delay:${i * 90}ms`}>
+      <div class="flex items-start justify-between gap-4">
+        <span class="font-display text-display-md font-semibold leading-none text-peach">{stage.n}</span>
+        <span class="eyebrow mt-2 text-right">{stage.duration}</span>
+      </div>
+      <p class="eyebrow mt-8">{stage.audience}</p>
+      <h3 class="mt-2 font-display text-2xl font-semibold leading-tight sm:text-[1.7rem]">{stage.title}</h3>
+      <p class="mt-3 text-ink-soft">{stage.summary}</p>
+      {detailed && (
+        <>
+          <p class="eyebrow mt-8">What happens</p>
+          <ul class="tick-list mt-3 text-[0.97rem]">
+            {stage.includes.map((item) => <li>{item}</li>)}
+          </ul>
+          <p class="eyebrow mt-8">Practical outcome</p>
+          <p class="mt-2 text-[0.97rem] text-ink-soft">{stage.outcome}</p>
+        </>
+      )}
+      {i < cascade.length - 1 && (
+        <span class="absolute -right-4 top-1/2 hidden size-8 -translate-y-1/2 items-center justify-center rounded-full bg-peach text-ink lg:flex" aria-hidden="true">
+          <Icon name="arrow-right" class="size-3.5" />
+        </span>
+      )}
+    </li>
+  ))}
+</ol>
+<style>
+  li { position: relative; }
+</style>

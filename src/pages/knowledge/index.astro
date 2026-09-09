@@ -1,0 +1,58 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '@/layouts/Base.astro';
+import Band from '@/components/Band.astro';
+import SectionHead from '@/components/SectionHead.astro';
+import ArticleCard from '@/components/ArticleCard.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import { categories, categoryKeys } from '@/lib/knowledge';
+
+const all = (await getCollection('knowledge', ({ data }) => !data.draft)).sort((a, b) => a.data.title.localeCompare(b.data.title));
+const featured = all.filter((a) => a.data.featured).slice(0, 3);
+---
+<Base title="Knowledge Hub" description="Clear, practical, sourced explanations of neurodiversity at work: the language, managing people, building better workplaces and employer responsibilities.">
+  <Band tight>
+    <SectionHead
+      as="h1"
+      eyebrow="Knowledge Hub"
+      title="Give away the facts. Sell the application"
+      lede="A permanent workplace reference, not a blog. Plain-English, sourced answers to the questions managers actually ask, reviewed by named people on a set cycle."
+      class="max-w-4xl"
+    />
+    <nav class="mt-10 flex flex-wrap gap-2" aria-label="Categories">
+      {categoryKeys.map((k) => (
+        <a href={`#${k}`} class="lift rounded-full border border-line px-4 py-2 text-sm font-medium hover:border-ink">{categories[k].label}</a>
+      ))}
+    </nav>
+  </Band>
+
+  {featured.length > 0 && (
+    <Band tone="paper2" tight>
+      <p class="eyebrow mb-6">Start here</p>
+      <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {featured.map((a) => <ArticleCard article={a} />)}
+      </div>
+    </Band>
+  )}
+
+  {categoryKeys.map((k) => {
+    const items = all.filter((a) => a.data.category === k);
+    return (
+      <Band id={k} tight>
+        <div class="grid gap-8 lg:grid-cols-12">
+          <div class="lg:col-span-4">
+            <h2 class="text-display-md dot max-w-[12ch]">{categories[k].label}</h2>
+            <p class="mt-4 max-w-sm text-ink-soft">{categories[k].blurb}</p>
+          </div>
+          <div class="grid gap-5 sm:grid-cols-2 lg:col-span-8">
+            {items.length > 0 ? items.map((a) => <ArticleCard article={a} />) : (
+              <p class="text-mute">Articles in this category are being written. Check back soon.</p>
+            )}
+          </div>
+        </div>
+      </Band>
+    );
+  })}
+
+  <CtaBand tone="dark" title="Want to put this into practice across your organisation?" body="Human Code turns the facts into practical management, across the whole organisation, in five hours. Start with a free 60-minute CEO briefing." />
+</Base>

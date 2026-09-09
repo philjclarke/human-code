@@ -1,0 +1,104 @@
+---
+import Base from '@/layouts/Base.astro';
+import Band from '@/components/Band.astro';
+import ArrowLink from '@/components/ArrowLink.astro';
+import SectionHead from '@/components/SectionHead.astro';
+import Photo from '@/components/Photo.astro';
+import Icon from '@/components/Icon.astro';
+
+const will = [
+  'Hear a straightforward, jargon-free explanation of neurodiversity and why it matters at work',
+  'Look at how people work and communicate differently, including you',
+  'Talk about practical things: instructions, meetings, workload, change, feedback',
+  'Learn simple ways colleagues can support one another, whoever they are',
+  'Leave with a few small changes you can use straight away',
+];
+
+const wont = [
+  'You will not be asked to disclose anything',
+  'Nobody is being taught to diagnose colleagues',
+  'Nobody in the room becomes a case study',
+  'Nobody will be singled out, labelled or put on the spot',
+  'Nothing you say in the room is recorded against you',
+];
+
+const faqs = [
+  { q: 'Is this about me?', a: 'No. Human Code is about how everyone works together. It is relevant whether you are neurodivergent or not, and it is not about identifying anyone.' },
+  { q: 'Will I have to say whether I have a diagnosis?', a: 'No. Nobody attending Human Code is ever asked to disclose a diagnosis, identify themselves as neurodivergent, discuss personal medical information or identify anyone else.' },
+  { q: 'Is my manager being trained to spot conditions?', a: 'No. Human Code does not teach managers or colleagues to identify autism, ADHD, dyslexia or any other condition. The principle is: see the need, respond to the need, don’t diagnose the reason.' },
+  { q: 'Does this mean standards are being lowered?', a: 'No. Better understanding does not mean lower standards. It means clearer expectations and better support to meet them.' },
+  { q: 'What if I do want to tell someone something?', a: 'That is entirely your choice, in your own time, and your organisation’s normal confidentiality applies. Human Code teaches managers how to respond well if somebody chooses to share something.' },
+  { q: 'How long is it?', a: 'The all-staff session is two hours, delivered live by a Human Code trainer, either online or in person.' },
+  { q: 'Is it theory-heavy?', a: 'No. Enough to make sense of the subject, then practical. The focus is on what people can actually do differently.' },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+---
+<Base title="What to expect" description="Attending Human Code? It’s about how we work together, not about identifying anyone. What will and won’t happen, in plain English." jsonLd={jsonLd}>
+  <Band tight>
+    <SectionHead
+      as="h1"
+      eyebrow="For everyone attending Human Code"
+      title="Human Code is about how we work together. It isn’t about identifying anyone"
+      lede="If your organisation has booked Human Code, this page tells you what will happen, what won’t, and why. Please share it with anyone who is wondering."
+      class="max-w-4xl"
+    />
+  </Band>
+
+  <Band tight>
+    <Photo src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=2000&q=70" alt="Colleagues working together in an ordinary office" mono ratio="21 / 9" />
+  </Band>
+
+  <Band>
+    <div class="grid gap-5 lg:grid-cols-2">
+      <div class="card reveal">
+        <p class="eyebrow">What will happen</p>
+        <ul class="mt-6 space-y-4" role="list">
+          {will.map((w) => (
+            <li class="flex gap-3.5 text-lg leading-snug"><Icon name="check" class="mt-1.5 size-4 flex-none text-peach-deep" />{w}</li>
+          ))}
+        </ul>
+      </div>
+      <div class="card reveal bg-ink text-paper" style="transition-delay:100ms">
+        <p class="eyebrow text-paper/60">What will not happen</p>
+        <ul class="mt-6 space-y-4" role="list">
+          {wont.map((w) => (
+            <li class="flex gap-3.5 font-display text-xl font-medium leading-snug sm:text-2xl"><span class="mt-2.5 size-2.5 flex-none rounded-full bg-peach" aria-hidden="true"></span>{w}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </Band>
+
+  <Band tone="peach">
+    <div class="grid gap-8 lg:grid-cols-12">
+      <div class="reveal lg:col-span-8">
+        <h2 class="text-display-lg max-w-[16ch]">Relevant whether you are neurodivergent or not</h2>
+        <p class="lede mt-6 text-ink/80">Everybody works and communicates a bit differently. Human Code is practical management training for everyone: a shared way of thinking about how people do their best work, and the small changes that help.</p>
+      </div>
+    </div>
+  </Band>
+
+  <Band>
+    <SectionHead eyebrow="Common questions" title="Straight answers" />
+    <div class="mt-12 max-w-3xl divide-y divide-line border-y border-line">
+      {faqs.map((f) => (
+        <details class="group py-5">
+          <summary class="flex cursor-pointer list-none items-start justify-between gap-6 font-display text-xl font-semibold leading-snug sm:text-2xl [&::-webkit-details-marker]:hidden">
+            {f.q}
+            <span class="mt-1 flex size-8 flex-none items-center justify-center rounded-full border border-line transition-transform group-open:rotate-45"><Icon name="plus" class="size-3.5" /></span>
+          </summary>
+          <p class="mt-4 max-w-2xl text-ink-soft">{f.a}</p>
+        </details>
+      ))}
+    </div>
+    <div class="mt-10 flex flex-wrap gap-x-10 gap-y-4">
+      <ArrowLink href="/knowledge/">Read the Knowledge Hub</ArrowLink>
+      <ArrowLink href="/about/">About Human Code</ArrowLink>
+    </div>
+  </Band>
+</Base>

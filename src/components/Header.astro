@@ -1,0 +1,68 @@
+---
+import Wordmark from './Wordmark.astro';
+import Button from './Button.astro';
+import Icon from './Icon.astro';
+import { nav, site } from '@/data/site';
+const path = Astro.url.pathname;
+const isActive = (href: string) => path === href || (href !== '/' && path.startsWith(href));
+---
+<header class="sticky top-0 z-40 border-b border-line bg-paper/90 backdrop-blur-md" data-header>
+  <div class="container-x flex h-[4.25rem] items-center justify-between gap-6 sm:h-20">
+    <a href="/" class="lift rounded-md" aria-label="Human Code home">
+      <Wordmark class="h-6 w-auto sm:h-7" />
+    </a>
+
+    <nav class="hidden items-center gap-7 lg:flex" aria-label="Primary">
+      {nav.map((item) => (
+        <a
+          href={item.href}
+          class:list={[
+            'font-sans text-[0.95rem] font-medium transition-colors hover:text-ink',
+            isActive(item.href) ? 'text-ink underline decoration-peach decoration-2 underline-offset-8' : 'text-ink-soft',
+          ]}
+          aria-current={isActive(item.href) ? 'page' : undefined}
+        >{item.label}</a>
+      ))}
+    </nav>
+
+    <div class="flex items-center gap-3">
+      <Button href={site.cta.href} cta dot class="hidden sm:inline-flex">{site.cta.nav}</Button>
+      <button
+        type="button"
+        class="lift inline-flex size-11 items-center justify-center rounded-full border border-line lg:hidden"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        data-menu-toggle
+      >
+        <span class="sr-only">Menu</span>
+        <Icon name="menu" class="size-5 [[aria-expanded=true]_&]:hidden" />
+        <Icon name="close" class="hidden size-5 [[aria-expanded=true]_&]:block" />
+      </button>
+    </div>
+  </div>
+
+  <div id="mobile-menu" class="hidden border-t border-line bg-paper lg:hidden" data-menu>
+    <nav class="container-x flex flex-col py-4" aria-label="Mobile">
+      {nav.map((item) => (
+        <a href={item.href} class="border-b border-line py-4 font-display text-2xl font-semibold" aria-current={isActive(item.href) ? 'page' : undefined}>{item.label}</a>
+      ))}
+      <a href="/what-to-expect/" class="border-b border-line py-4 text-base text-ink-soft">What to expect</a>
+      <a href="/schools-and-mats/" class="border-b border-line py-4 text-base text-ink-soft">Schools &amp; MATs</a>
+      <div class="py-6">
+        <Button href={site.cta.href} cta dot class="w-full">{site.cta.short}</Button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const menu = document.querySelector<HTMLElement>('[data-menu]');
+  toggle?.addEventListener('click', () => {
+    const open = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!open));
+    if (menu) menu.hidden = open;
+    if (menu) menu.classList.toggle('hidden', open);
+    document.body.classList.toggle('overflow-hidden', !open);
+  });
+</script>

@@ -1,0 +1,20 @@
+---
+/**
+ * Placeholder photography. Large images render mono with lifted contrast;
+ * small card images stay in colour.
+ * TODO(client): replace Unsplash placeholders with commissioned photography,
+ * then switch to astro:assets for optimisation.
+ */
+interface Props {
+  src: string;
+  alt: string;
+  mono?: boolean;
+  class?: string;
+  ratio?: string;
+  loading?: 'lazy' | 'eager';
+}
+const { src, alt, mono = false, class: className = '', ratio = '4 / 3', loading = 'lazy' } = Astro.props;
+---
+<figure class:list={['overflow-hidden rounded-2xl bg-paper-2', mono && 'photo-mono', className]} style={`aspect-ratio:${ratio}`}>
+  <img src={src} alt={alt} loading={loading} decoding="async" class="h-full w-full object-cover" />
+</figure>

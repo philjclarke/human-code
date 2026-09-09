@@ -1,0 +1,29 @@
+---
+/** "No labels. No forced disclosure." Used on home, what-to-expect and how-it-works. */
+interface Props { heading?: string; eyebrow?: string; statements?: string[] }
+const {
+  heading = 'No labels. No forced disclosure.',
+  eyebrow = 'Reassurance',
+  statements = [
+    'Nobody is asked to disclose a diagnosis.',
+    'Human Code does not teach managers or colleagues to diagnose people.',
+    'Nobody becomes a case study.',
+    'Understanding difference does not mean lowering standards.',
+    'Human Code is practical management training for everyone.',
+  ],
+} = Astro.props;
+---
+<div class="grid gap-10 lg:grid-cols-12 lg:gap-8">
+  <div class="reveal lg:col-span-5">
+    <p class="eyebrow mb-4">{eyebrow}</p>
+    <h2 class="text-display-lg max-w-[12ch]">{heading}</h2>
+  </div>
+  <ul class="reveal lg:col-span-6 lg:col-start-7" role="list" style="transition-delay:120ms">
+    {statements.map((s) => (
+      <li class="flex items-start gap-5 border-t border-line py-5 font-display text-xl font-medium leading-snug sm:text-2xl">
+        <span class="mt-2.5 size-2.5 flex-none rounded-full bg-peach" aria-hidden="true"></span>
+        {s}
+      </li>
+    ))}
+  </ul>
+</div>
