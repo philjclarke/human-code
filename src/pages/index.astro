@@ -10,25 +10,26 @@ import Reassurance from '@/components/Reassurance.astro';
 import CtaBand from '@/components/CtaBand.astro';
 import Photo from '@/components/Photo.astro';
 import Icon from '@/components/Icon.astro';
+import BriefingNote from '@/components/BriefingNote.astro';
 import { site, pricing } from '@/data/site';
 
 const credibility = [
   {
     title: 'Written by people who teach for a living',
-    body: 'Human Code was written by experienced teachers and coaches with a track record of making complicated subjects understandable. Their names, qualifications and background are on the About page.',
+    body: 'Written by experienced teachers and coaches who make complicated subjects understandable. Their names and qualifications are on the About page.',
     // TODO(client): confirm writers and qualifications.
   },
   {
     title: 'Researched, referenced and reviewed',
-    body: 'The programme is evidence-informed and cites its sources. Content is reviewed on a set cycle and updated when the research or the law changes.',
+    body: 'Evidence-informed, with sources cited. Reviewed on a set cycle and updated when research or the law changes.',
   },
   {
     title: 'Delivered by experienced teachers and coaches',
-    body: 'Every Human Code trainer is an experienced teacher or coach, trained and approved to deliver the same consistent programme.',
+    body: 'Every trainer is an experienced teacher or coach, approved to deliver one consistent programme.',
   },
   {
     title: 'Practical before theoretical',
-    body: 'Enough theory to make sense of the subject, then straight to the question that matters: what should I actually do differently?',
+    body: 'Enough theory to make sense of the subject, then straight to: what should I do differently?',
   },
 ];
 
@@ -55,7 +56,7 @@ const recognition = [
 
 const opportunity = [
   { title: 'More confident managers', body: 'Managers who know what to do, and feel able to do it.' },
-  { title: 'Retain more good people', body: 'Fewer capable people walking out of the door for avoidable reasons.' },
+  { title: 'Retain more good people', body: 'Fewer good people leaving for avoidable reasons.' },
   { title: 'Improve individual performance', body: 'Clearer expectations, better support, higher standards.' },
   { title: 'Build better teams', body: 'A shared language for how people work and communicate.' },
   { title: 'Allocate work more intelligently', body: 'Put people where their strengths do the most good.' },
@@ -99,14 +100,14 @@ const jsonLd = [
         <dl class="mt-5 divide-y divide-line">
           <div class="flex items-baseline justify-between py-3">
             <dt class="font-medium">Live online</dt>
-            <dd class="font-display text-3xl font-semibold">{pricing.online.display}</dd>
+            <dd class="font-display text-3xl font-semibold">{pricing.online.display} <span class="font-sans text-sm font-medium text-mute">{pricing.vat}</span></dd>
           </div>
           <div class="flex items-baseline justify-between py-3">
             <dt class="font-medium">Face-to-face</dt>
-            <dd class="font-display text-3xl font-semibold">{pricing.faceToFace.display}</dd>
+            <dd class="font-display text-3xl font-semibold">{pricing.faceToFace.display} <span class="font-sans text-sm font-medium text-mute">{pricing.vat}</span></dd>
           </div>
         </dl>
-        <p class="mt-3 text-sm text-mute">Per organisation or site. Additional online sites {pricing.multiSite.display}. {pricing.vatNote}</p>
+        <p class="mt-3 text-sm text-mute">Per organisation or site of up to 100 staff. Additional online sites {pricing.multiSite.display} {pricing.vat}.</p>
         <ArrowLink href="/pricing/" class="mt-5">See pricing</ArrowLink>
       </aside>
     </div>
@@ -226,6 +227,7 @@ const jsonLd = [
     <div class="mt-14">
       <Cascade />
     </div>
+    <BriefingNote class="mt-8" />
     <div class="mt-10">
       <ArrowLink href="/how-it-works/">How Human Code works in detail</ArrowLink>
     </div>
@@ -244,11 +246,12 @@ const jsonLd = [
     <SectionHead
       eyebrow="Pricing"
       title="One price. Everything included"
-      lede="Choose live online delivery for maximum convenience, or face-to-face where you want Human Code delivered in person at your organisation."
+      lede="Live online is the standard Human Code programme, easy to schedule wherever your people are. Face-to-face brings the same complete programme into your workplace."
     />
     <div class="mt-14">
       <PricingCards />
     </div>
+    <BriefingNote class="mt-8" />
     <p class="mt-6 text-sm text-mute">{pricing.vatNote}</p>
   </Band>
 

@@ -6,7 +6,7 @@ import { site, pricing } from '@/data/site';
 interface Props { title?: string; body?: string; tone?: 'dark' | 'peach' | 'light' }
 const {
   title = 'See the price. Book the briefing. Decide in an hour.',
-  body = `The full programme is ${pricing.online.display} live online or ${pricing.faceToFace.display} face-to-face, plus VAT, for an organisation of up to 100 people. Your free 60-minute CEO briefing is useful whether or not you go ahead.`,
+  body = `${pricing.online.name} is ${pricing.online.display} ${pricing.vat} and ${pricing.faceToFace.name} is ${pricing.faceToFace.display} ${pricing.vat}, for an organisation of up to 100 people. The free briefing comes first. The paid programme is a separate five-hour organisational programme.`,
   tone = 'peach',
 } = Astro.props;
 const tones = { dark: 'dark-band', peach: 'bg-peach text-ink', light: 'bg-paper-2 text-ink' };

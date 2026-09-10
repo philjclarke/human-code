@@ -15,19 +15,27 @@ const featured = all.filter((a) => a.data.featured).slice(0, 3);
     <SectionHead
       as="h1"
       eyebrow="Knowledge Hub"
-      title="Give away the facts. Sell the application"
+      title="Understand the facts. Know what to do"
       lede="A permanent workplace reference, not a blog. Plain-English, sourced answers to the questions managers actually ask, reviewed by named people on a set cycle."
       class="max-w-4xl"
     />
-    <nav class="mt-10 flex flex-wrap gap-2" aria-label="Categories">
-      {categoryKeys.map((k) => (
-        <a href={`#${k}`} class="lift rounded-full border border-line px-4 py-2 text-sm font-medium hover:border-ink">{categories[k].label}</a>
-      ))}
-    </nav>
+    <form class="mt-10 grid gap-4 lg:grid-cols-12 lg:items-center" role="search" data-kh-search onsubmit="return false">
+      <div class="field lg:col-span-5">
+        <label for="kh-q" class="sr-only">Search the Knowledge Hub</label>
+        <input id="kh-q" type="search" placeholder="Search articles, e.g. deadlines, meetings, disclosure" autocomplete="off" data-kh-q />
+      </div>
+      <div class="flex flex-wrap gap-2 lg:col-span-7" role="group" aria-label="Filter by category">
+        <button type="button" class="lift rounded-full border border-ink bg-ink px-4 py-2 text-sm font-medium text-paper" data-kh-cat="all" aria-pressed="true">All</button>
+        {categoryKeys.map((k) => (
+          <button type="button" class="lift rounded-full border border-line px-4 py-2 text-sm font-medium hover:border-ink" data-kh-cat={k} aria-pressed="false">{categories[k].label}</button>
+        ))}
+      </div>
+    </form>
+    <p class="mt-4 text-sm text-mute" data-kh-count aria-live="polite"></p>
   </Band>
 
   {featured.length > 0 && (
-    <Band tone="paper2" tight>
+    <Band tone="paper2" tight data-kh-featured>
       <p class="eyebrow mb-6">Start here</p>
       <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {featured.map((a) => <ArticleCard article={a} />)}
@@ -38,7 +46,7 @@ const featured = all.filter((a) => a.data.featured).slice(0, 3);
   {categoryKeys.map((k) => {
     const items = all.filter((a) => a.data.category === k);
     return (
-      <Band id={k} tight>
+      <Band id={k} tight data-kh-section={k}>
         <div class="grid gap-8 lg:grid-cols-12">
           <div class="lg:col-span-4">
             <h2 class="text-display-md dot max-w-[12ch]">{categories[k].label}</h2>
@@ -46,7 +54,7 @@ const featured = all.filter((a) => a.data.featured).slice(0, 3);
           </div>
           <div class="grid gap-5 sm:grid-cols-2 lg:col-span-8">
             {items.length > 0 ? items.map((a) => <ArticleCard article={a} />) : (
-              <p class="text-mute">Articles in this category are being written. Check back soon.</p>
+              <p class="text-mute" data-kh-empty>Articles in this category are being written. Check back soon.</p>
             )}
           </div>
         </div>
@@ -54,5 +62,64 @@ const featured = all.filter((a) => a.data.featured).slice(0, 3);
     );
   })}
 
-  <CtaBand tone="dark" title="Want to put this into practice across your organisation?" body="Human Code turns the facts into practical management, across the whole organisation, in five hours. Start with a free 60-minute CEO briefing." />
+  <Band tight class="hidden" data-kh-none>
+    <p class="font-display text-display-sm font-medium">No articles match that search yet.</p>
+    <p class="mt-3 text-ink-soft">Try a different word, or <a href="/book/" class="underline decoration-peach underline-offset-2">book a CEO briefing</a> and ask us directly.</p>
+  </Band>
+
+  <CtaBand tone="peach" title="Want to put this into practice across your organisation?" body="Human Code turns the facts into practical management, across the whole organisation, in five hours. Start with a free 60-minute CEO briefing." />
 </Base>
+
+<script>
+  const q = document.querySelector<HTMLInputElement>('[data-kh-q]');
+  const catButtons = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-kh-cat]'));
+  const sections = Array.from(document.querySelectorAll<HTMLElement>('[data-kh-section]'));
+  const featured = document.querySelector<HTMLElement>('[data-kh-featured]');
+  const none = document.querySelector<HTMLElement>('[data-kh-none]');
+  const count = document.querySelector<HTMLElement>('[data-kh-count]');
+  let cat = 'all';
+
+  const apply = () => {
+    const term = (q?.value ?? '').trim().toLowerCase();
+    const active = term.length > 0 || cat !== 'all';
+    let visible = 0;
+    for (const section of sections) {
+      const key = section.dataset.khSection;
+      const cards = Array.from(section.querySelectorAll<HTMLElement>('[data-article]'));
+      let shown = 0;
+      for (const card of cards) {
+        const match = (cat === 'all' || key === cat) && (!term || (card.dataset.search ?? '').includes(term));
+        card.hidden = !match;
+        if (match) shown++;
+      }
+      const empty = section.querySelector<HTMLElement>('[data-kh-empty]');
+      if (empty) empty.hidden = active;
+      section.hidden = active && shown === 0;
+      visible += shown;
+    }
+    if (featured) featured.hidden = active;
+    if (none) none.classList.toggle('hidden', !active || visible > 0);
+    if (count) count.textContent = active ? `${visible} article${visible === 1 ? '' : 's'}` : '';
+    history.replaceState(null, '', active ? `?${new URLSearchParams({ ...(term && { q: term }), ...(cat !== 'all' && { cat }) })}` : location.pathname);
+  };
+
+  const setCat = (next: string) => {
+    cat = next;
+    for (const b of catButtons) {
+      const on = b.dataset.khCat === cat;
+      b.setAttribute('aria-pressed', String(on));
+      b.classList.toggle('bg-ink', on);
+      b.classList.toggle('text-paper', on);
+      b.classList.toggle('border-ink', on);
+      b.classList.toggle('border-line', !on);
+    }
+    apply();
+  };
+
+  q?.addEventListener('input', apply);
+  catButtons.forEach((b) => b.addEventListener('click', () => setCat(b.dataset.khCat!)));
+
+  const params = new URLSearchParams(location.search);
+  if (q && params.get('q')) q.value = params.get('q')!;
+  setCat(params.get('cat') && catButtons.some((b) => b.dataset.khCat === params.get('cat')) ? params.get('cat')! : 'all');
+</script>

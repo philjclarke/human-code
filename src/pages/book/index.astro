@@ -3,6 +3,7 @@ import Base from '@/layouts/Base.astro';
 import Band from '@/components/Band.astro';
 import Button from '@/components/Button.astro';
 import Icon from '@/components/Icon.astro';
+import BriefingNote from '@/components/BriefingNote.astro';
 import { site, pricing } from '@/data/site';
 import { sectors, staffBands, siteBands } from '@/lib/booking';
 
@@ -34,9 +35,10 @@ const agenda = [
 
         <div class="mt-8 rounded-2xl bg-paper-2 p-6">
           <p class="eyebrow">If you go ahead</p>
-          <p class="mt-3 font-display text-2xl font-semibold">{pricing.online.display} live online · {pricing.faceToFace.display} face-to-face</p>
-          <p class="mt-1 text-sm text-mute">Per organisation or site of up to 100 staff. {pricing.vatNote}</p>
+          <p class="mt-3 font-display text-2xl font-semibold">{pricing.online.display} {pricing.vat} live online · {pricing.faceToFace.display} {pricing.vat} face-to-face</p>
+          <p class="mt-1 text-sm text-mute">Per organisation or site of up to 100 staff. Additional online sites {pricing.multiSite.display} {pricing.vat}.</p>
         </div>
+        <BriefingNote class="mt-5" />
       </div>
 
       <div class="lg:col-span-6 lg:col-start-7">

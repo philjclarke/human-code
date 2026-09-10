@@ -8,6 +8,7 @@ import Reassurance from '@/components/Reassurance.astro';
 import CtaBand from '@/components/CtaBand.astro';
 import Photo from '@/components/Photo.astro';
 import Icon from '@/components/Icon.astro';
+import BriefingNote from '@/components/BriefingNote.astro';
 import { site, pricing } from '@/data/site';
 
 const issues = [
@@ -68,6 +69,7 @@ const route = [
           title="Every school gets its own full implementation"
           lede="One briefing with the trust CEO. Then each school receives the complete Human Code cascade, pitched for its own headteacher, SLT and staff."
         />
+        <BriefingNote class="mt-8 border-line-dark text-paper/75" />
       </div>
       <ol class="lg:col-span-6 lg:col-start-7" role="list">
         {route.map(([who, time, what], i) => (
@@ -92,7 +94,7 @@ const route = [
         <SectionHead
           eyebrow="Pricing for trusts"
           title="Priced per school"
-          lede={`First school ${pricing.online.display} live online, additional schools ${pricing.multiSite.display} each, plus VAT. Face-to-face delivery is ${pricing.faceToFace.display} per school. We agree the rollout across your trust during the CEO briefing.`}
+          lede={`First school ${pricing.online.display} ${pricing.vat} live online, additional schools ${pricing.multiSite.display} ${pricing.vat} each. Face-to-face delivery is ${pricing.faceToFace.display} ${pricing.vat} per school. We agree the rollout across your trust during the CEO briefing.`}
         />
         <div class="mt-8 flex flex-wrap gap-x-10 gap-y-4">
           <ArrowLink href="/pricing/">Full pricing</ArrowLink>
@@ -117,5 +119,5 @@ const route = [
     ]} />
   </Band>
 
-  <CtaBand tone="dark" title="Book your free 60-minute CEO briefing" body="For trust CEOs and headteachers. Twenty minutes of briefing, thirty applied to your schools, ten to decide." />
+  <CtaBand tone="peach" title="Book your free 60-minute CEO briefing" body="For trust CEOs and headteachers. Twenty minutes of briefing, thirty applied to your schools, ten to decide." />
 </Base>

@@ -8,13 +8,14 @@ const year = new Date().getFullYear();
   <div class="container-x">
     <div class="grid gap-12 py-16 sm:py-20 lg:grid-cols-12 lg:gap-8">
       <div class="lg:col-span-6">
-        <h2 class="text-display-lg dot max-w-[14ch] text-paper">Better management for different brains</h2>
-        <p class="lede mt-6 max-w-[34rem]">
-          The complete programme is {pricing.online.display} live online or {pricing.faceToFace.display} face-to-face for an organisation of up to 100 people, plus VAT. The first step costs nothing.
-        </p>
+        <h2 class="text-display-lg max-w-[16ch] text-paper">Ready to manage different brains better?</h2>
+        <p class="lede mt-6 max-w-[34rem]">Start with your free 60-minute CEO briefing.</p>
         <div class="mt-8">
-          <Button href={site.cta.href} cta dot size="lg">{site.cta.long}</Button>
+          <Button href={site.cta.href} cta dot size="lg">{site.cta.short}</Button>
         </div>
+        <p class="mt-8 text-sm text-paper/60">
+          {pricing.online.name} {pricing.online.display} {pricing.vat} · {pricing.faceToFace.name} {pricing.faceToFace.display} {pricing.vat} · {pricing.multiSite.name} {pricing.multiSite.display} {pricing.vat}
+        </p>
       </div>
 
       <div class="grid grid-cols-2 gap-8 lg:col-span-5 lg:col-start-8">

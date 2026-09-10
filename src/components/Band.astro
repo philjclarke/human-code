@@ -1,7 +1,7 @@
 ---
 /** A full-width horizontal band. tone: light | dark | peach | paper2 */
-interface Props { tone?: 'light' | 'dark' | 'peach' | 'paper2'; tight?: boolean; class?: string; id?: string }
-const { tone = 'light', tight = false, class: className = '', id } = Astro.props;
+interface Props { tone?: 'light' | 'dark' | 'peach' | 'paper2'; tight?: boolean; class?: string; id?: string; [key: string]: unknown }
+const { tone = 'light', tight = false, class: className = '', id, ...rest } = Astro.props;
 const tones = {
   light: 'bg-paper text-ink',
   paper2: 'bg-paper-2 text-ink',
@@ -9,7 +9,7 @@ const tones = {
   peach: 'bg-peach text-ink',
 };
 ---
-<section id={id} class={`${tones[tone]} ${tight ? 'band-tight' : 'band'} ${className}`}>
+<section id={id} class={`${tones[tone]} ${tight ? 'band-tight' : 'band'} ${className}`} {...rest}>
   <div class="container-x">
     <slot />
   </div>

@@ -1,0 +1,10 @@
+---
+/** Separates the free CEO briefing from the paid five-hour programme. Shown wherever the programme is explained. */
+import { briefingNote } from '@/data/site';
+interface Props { class?: string }
+const { class: className = '' } = Astro.props;
+---
+<p class:list={['flex max-w-2xl gap-3 rounded-xl border border-line px-5 py-4 text-base text-ink-soft', className]}>
+  <span class="mt-2 size-2 flex-none rounded-full bg-peach" aria-hidden="true"></span>
+  <span>{briefingNote}</span>
+</p>

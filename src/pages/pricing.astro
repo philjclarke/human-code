@@ -6,6 +6,7 @@ import ArrowLink from '@/components/ArrowLink.astro';
 import SectionHead from '@/components/SectionHead.astro';
 import PricingCards from '@/components/PricingCards.astro';
 import CtaBand from '@/components/CtaBand.astro';
+import BriefingNote from '@/components/BriefingNote.astro';
 import { site, pricing } from '@/data/site';
 
 const steps = ['Understand the offer', 'See the price', 'Book your free CEO briefing', 'Attend the briefing', 'Agree delivery and book a date', 'Invoice sent'];
@@ -22,6 +23,7 @@ const steps = ['Understand the offer', 'See the price', 'Book your free CEO brie
 
   <Band tight>
     <PricingCards />
+    <BriefingNote class="mt-8" />
     <p class="mt-6 text-sm text-mute">{pricing.vatNote} Prices are per organisation or site of up to 100 staff.</p>
   </Band>
 
@@ -36,11 +38,11 @@ const steps = ['Understand the offer', 'See the price', 'Book your free CEO brie
       </div>
       <div class="reveal space-y-6 lg:col-span-5 lg:col-start-8" style="transition-delay:120ms">
         <div class="border-t border-line-dark pt-5">
-          <p class="font-display text-2xl font-semibold">First site: {pricing.online.display} online</p>
-          <p class="mt-1 text-paper/70">Or {pricing.faceToFace.display} face-to-face. Up to 100 staff per site.</p>
+          <p class="font-display text-2xl font-semibold">First site: {pricing.online.display} {pricing.vat} online</p>
+          <p class="mt-1 text-paper/70">Or {pricing.faceToFace.display} {pricing.vat} face-to-face. Up to 100 staff per site.</p>
         </div>
         <div class="border-t border-line-dark pt-5">
-          <p class="font-display text-2xl font-semibold">Additional online sites {pricing.multiSite.display}</p>
+          <p class="font-display text-2xl font-semibold">Additional online sites {pricing.multiSite.display} {pricing.vat}</p>
           <p class="mt-1 text-paper/70">Each with its own leader briefing, leadership session and all-staff session.</p>
         </div>
         <div class="border-t border-line-dark pt-5">
@@ -79,5 +81,5 @@ const steps = ['Understand the offer', 'See the price', 'Book your free CEO brie
     </div>
   </Band>
 
-  <CtaBand tone="dark" />
+  <CtaBand tone="peach" />
 </Base>

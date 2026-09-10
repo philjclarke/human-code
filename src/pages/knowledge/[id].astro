@@ -40,12 +40,16 @@ const jsonLd = {
         <p class="eyebrow mb-4"><a href={`/knowledge/#${d.category}`} class="hover:text-ink">{categoryLabel(d.category)}</a></p>
         <h1 class="text-display-lg max-w-[18ch]">{d.title}</h1>
         <p class="lede mt-6">{d.summary}</p>
-        <dl class="mt-8 flex flex-wrap gap-x-8 gap-y-2 text-sm text-mute">
-          <div class="flex gap-2"><dt class="font-semibold text-ink-soft">Author</dt><dd>{d.author}</dd></div>
-          {d.reviewer && <div class="flex gap-2"><dt class="font-semibold text-ink-soft">Reviewed by</dt><dd>{d.reviewer}</dd></div>}
-          <div class="flex gap-2"><dt class="font-semibold text-ink-soft">Last reviewed</dt><dd><time datetime={d.reviewed.toISOString()}>{formatDate(d.reviewed)}</time></dd></div>
-        </dl>
       </div>
+      <!-- Standard evidence block: identical on every article. -->
+      <dl class="mt-10 grid gap-x-8 gap-y-5 rounded-2xl border border-line bg-white/50 p-6 text-[0.95rem] sm:grid-cols-3 lg:grid-cols-6" aria-label="Article evidence">
+        <div><dt class="eyebrow">Author</dt><dd class="mt-1.5 font-medium">{d.author}</dd></div>
+        <div><dt class="eyebrow">Reviewer</dt><dd class:list={['mt-1.5 font-medium', !d.reviewer && 'text-mute']}>{d.reviewer ?? 'To be confirmed'}</dd></div>
+        <div><dt class="eyebrow">Published</dt><dd class="mt-1.5 font-medium"><time datetime={d.published.toISOString()}>{formatDate(d.published)}</time></dd></div>
+        <div><dt class="eyebrow">Last reviewed</dt><dd class="mt-1.5 font-medium"><time datetime={d.reviewed.toISOString()}>{formatDate(d.reviewed)}</time></dd></div>
+        <div><dt class="eyebrow">Category</dt><dd class="mt-1.5 font-medium"><a href={`/knowledge/?cat=${d.category}`} class="underline decoration-peach underline-offset-2 hover:decoration-ink">{categoryLabel(d.category)}</a></dd></div>
+        <div><dt class="eyebrow">Sources</dt><dd class="mt-1.5 font-medium">{d.sources.length > 0 ? <a href="#sources" class="underline decoration-peach underline-offset-2 hover:decoration-ink">{d.sources.length} reference{d.sources.length === 1 ? '' : 's'}</a> : <span class="text-mute">None listed</span>}</dd></div>
+      </dl>
     </Band>
 
     <Band tight>
@@ -78,7 +82,7 @@ const jsonLd = {
 
           {d.sources.length > 0 && (
             <section class="mt-14 border-t border-line pt-8" aria-labelledby="sources">
-              <h2 id="sources" class="eyebrow">Sources</h2>
+              <h2 id="sources" class="eyebrow">Sources and references</h2>
               <ol class="mt-4 space-y-2 text-[0.95rem]">
                 {d.sources.map((s, i) => (
                   <li class="flex gap-3">

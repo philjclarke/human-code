@@ -6,48 +6,49 @@ import ArrowLink from '@/components/ArrowLink.astro';
 import SectionHead from '@/components/SectionHead.astro';
 import CtaBand from '@/components/CtaBand.astro';
 import Photo from '@/components/Photo.astro';
+import BriefingNote from '@/components/BriefingNote.astro';
 import { site, pricing } from '@/data/site';
 
 const problems = [
   {
     title: 'Build more confident managers',
-    recognise: 'Managers who avoid the conversation, or have it badly, because they are not sure what they are allowed to say.',
-    change: 'Managers leave knowing what to do, what to say and where the boundaries are. Confident, not cautious.',
+    recognise: 'Managers who avoid the conversation, or have it badly, because they are unsure what they can say.',
+    change: 'Managers who know what to do, what to say and where the boundaries are.',
   },
   {
     title: 'Retain good people',
-    recognise: 'Capable people who leave for reasons that seem small from the outside, and were probably avoidable.',
-    change: 'Small changes to how work is set up, communicated and reviewed that keep good people doing good work.',
+    recognise: 'Capable people leaving for reasons that were probably avoidable.',
+    change: 'Small changes to how work is set up and reviewed that keep good people.',
   },
   {
     title: 'Improve performance',
-    recognise: 'Someone who is brilliant at one part of the job and consistently struggles with another.',
-    change: 'Clearer expectations, better matched support and higher standards. Understanding does not mean lowering the bar.',
+    recognise: 'Someone brilliant at one part of the job who consistently struggles with another.',
+    change: 'Clearer expectations and better-matched support, without lowering the bar.',
   },
   {
     title: 'Use people’s strengths better',
     recognise: 'Strengths that only show up by accident, because nobody asked.',
-    change: 'A simple habit of asking rather than assuming, so strengths are found and used on purpose.',
+    change: 'A habit of asking rather than assuming, so strengths are used on purpose.',
   },
   {
     title: 'Staff new projects more intelligently',
-    recognise: 'Teams assembled by availability, then surprised when the mix does not work.',
-    change: 'Managers who think about how people work, not just what they know, when they allocate work.',
-  },
-  {
-    title: 'Handle difficult situations earlier',
-    recognise: 'A problem that everybody could see coming and nobody addressed until it became formal.',
-    change: 'Earlier, calmer conversations. Fewer situations that escalate to HR, grievance or exit.',
+    recognise: 'Teams assembled by availability, then surprised when the mix fails.',
+    change: 'Managers who think about how people work, not just what they know.',
   },
   {
     title: 'Improve working relationships',
-    recognise: 'Friction that comes down to two people communicating in different ways and each assuming the worst.',
-    change: 'A shared language across the organisation for how people work and communicate differently.',
+    recognise: 'Friction between two people who communicate differently and assume the worst.',
+    change: 'A shared language for how people work and communicate differently.',
+  },
+  {
+    title: 'Handle difficult situations earlier',
+    recognise: 'A problem everyone saw coming that nobody addressed until it became formal.',
+    change: 'Earlier, calmer conversations. Fewer escalations to HR, grievance or exit.',
   },
   {
     title: 'Reduce avoidable management and legal risk',
     recognise: 'Managers unsure of their responsibilities around adjustments, disclosure and confidentiality.',
-    change: 'Basic legal awareness built into good management practice, and clarity on when to involve HR, occupational health or legal advice.',
+    change: 'Basic legal awareness built into good management, and clarity on when to involve HR or legal advice.',
   },
 ];
 ---
@@ -59,7 +60,7 @@ const problems = [
           as="h1"
           eyebrow="For CEOs, MDs, headteachers and people directors"
           title="Get more from the people you already have"
-          lede="You are not short of capable people. You are short of managers who know how to get the best from all of them. Human Code fixes that, across the whole organisation, in five hours."
+          lede="Most organisations already employ capable people. Human Code helps managers understand how different people work, get more from their strengths and handle difficult situations with greater confidence — across the whole organisation, in five hours."
         />
       </div>
       <div class="reveal lg:col-span-4 lg:justify-self-end">
@@ -122,8 +123,9 @@ const problems = [
         <SectionHead
           eyebrow="The commitment"
           title="Five hours. One price. No dependency"
-          lede={`The whole programme, leader to all staff, is ${pricing.online.display} live online or ${pricing.faceToFace.display} face-to-face, plus VAT, for an organisation of up to 100 people. No subscription, no follow-on consultancy.`}
+          lede={`The whole programme, leader to all staff, is ${pricing.online.display} ${pricing.vat} live online or ${pricing.faceToFace.display} ${pricing.vat} face-to-face, for an organisation of up to 100 people. No subscription, no follow-on consultancy.`}
         />
+        <BriefingNote class="mt-8" />
         <div class="mt-8 flex flex-wrap gap-x-10 gap-y-4">
           <ArrowLink href="/pricing/">See pricing</ArrowLink>
           <ArrowLink href="/how-it-works/">How it works</ArrowLink>
@@ -145,5 +147,5 @@ const problems = [
     </div>
   </Band>
 
-  <CtaBand tone="dark" title="Book your free 60-minute CEO briefing" body="Twenty minutes of briefing, thirty minutes applied to your organisation, ten minutes to decide. Useful either way." />
+  <CtaBand tone="peach" title="Book your free 60-minute CEO briefing" body="Twenty minutes of briefing, thirty minutes applied to your organisation, ten minutes to decide. Useful either way." />
 </Base>

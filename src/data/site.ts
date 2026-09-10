@@ -24,13 +24,13 @@ export const site = {
 
 export const pricing = {
   vatNote: 'All prices exclude VAT.',
+  vat: '+ VAT',
   online: {
     name: 'Human Code Online',
     price: 995,
     display: '£995',
     unit: 'per organisation or site of up to 100 staff',
-    summary:
-      'The complete live Human Code programme for your organisation: leader briefing, leadership session, all-staff session and ongoing access to Human Code materials.',
+    summary: 'The complete live programme: leader, leadership and all-staff sessions, plus ongoing access to Human Code materials.',
     includes: [
       '1-hour leader session',
       '2-hour leadership session',
@@ -43,7 +43,7 @@ export const pricing = {
     price: 1500,
     display: '£1,500',
     unit: 'per organisation or site of up to 100 staff',
-    summary: 'The same complete programme, delivered in person at your organisation.',
+    summary: 'The same complete programme, delivered in person.',
     includes: [
       '1-hour leader session',
       '2-hour leadership session',
@@ -55,8 +55,24 @@ export const pricing = {
     name: 'Additional online sites',
     display: 'from £750',
     unit: 'per additional site',
-    summary:
-      'Each additional site receives its own full Human Code cascade. We agree the rollout with you during your CEO briefing.',
+    summary: 'Each site gets its own full cascade. We agree the rollout during your CEO briefing.',
+  },
+} as const;
+
+/** Shown wherever the programme is explained, to separate the free briefing from the paid cascade. */
+export const briefingNote =
+  'The free 60-minute briefing comes first. If you proceed, the paid Human Code programme is a separate five-hour organisational programme.';
+
+export const delivery = {
+  online: {
+    title: 'Live online',
+    sub: 'The standard Human Code programme',
+    body: 'Easy to schedule across your organisation, wherever your people are.',
+  },
+  faceToFace: {
+    title: 'Face-to-face',
+    sub: 'Human Code in your workplace',
+    body: 'The same complete programme, delivered in person.',
   },
 } as const;
 
@@ -68,7 +84,7 @@ export const cascade = [
     duration: '60 minutes',
     purpose: 'Understand and lead',
     summary:
-      'An essential factual briefing on neurodiversity at work and what it means for management, performance and the organisation.',
+      'The essential facts on neurodiversity at work and what they mean for management and performance.',
     includes: [
       'Neurodiversity in the workplace, clearly explained',
       'Management and performance implications',
@@ -88,7 +104,7 @@ export const cascade = [
     duration: '2 hours',
     purpose: 'Know what to do',
     summary:
-      'Practical management: what to do differently on Monday morning, worked through real scenarios.',
+      'What to do differently on Monday morning, worked through real scenarios.',
     includes: [
       'Communication, workload and task allocation',
       'Managing performance with confidence',
@@ -108,7 +124,7 @@ export const cascade = [
     duration: '2 hours',
     purpose: 'Work better together',
     summary:
-      'A straightforward, inclusive session on how people work and communicate differently, and the small changes that make teams work.',
+      'How people work and communicate differently, and the small changes that make teams work.',
     includes: [
       'Straightforward understanding of neurodiversity',
       'Different working and communication styles',
