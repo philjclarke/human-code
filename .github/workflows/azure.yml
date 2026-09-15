@@ -1,0 +1,62 @@
+# Build the static site on GitHub and deploy the build plus server.js to
+# Azure App Service. Nothing is built on Azure and no node_modules are shipped:
+# server.js has no dependencies.
+#
+# Required in the GitHub repo:
+#   secrets.AZURE_WEBAPP_PUBLISH_PROFILE   from the portal: Overview -> Download publish profile
+#   vars.AZURE_WEBAPP_NAME                 the web app's name
+#   vars.SITE_URL                          canonical site URL (optional until the domain exists)
+#   vars.PUBLIC_GA_MEASUREMENT_ID          GA4 ID (optional; analytics off when empty)
+
+name: Deploy to Azure App Service
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run check
+
+      - run: npm run build
+        env:
+          SITE_URL: ${{ vars.SITE_URL }}
+          PUBLIC_GA_MEASUREMENT_ID: ${{ vars.PUBLIC_GA_MEASUREMENT_ID }}
+
+      - name: Assemble deployment package
+        run: |
+          rm -rf deploy && mkdir deploy
+          cp -r dist server server.js package.json deploy/
+
+      - name: Smoke test the server
+        run: |
+          cd deploy
+          PORT=8090 node server.js &
+          sleep 2
+          curl -fsS -o /dev/null http://localhost:8090/
+          curl -fsS -o /dev/null http://localhost:8090/pricing/
+          test "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:8090/nope)" = "404"
+          kill %1
+
+      - uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ vars.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: deploy
