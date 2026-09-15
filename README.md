@@ -33,11 +33,11 @@ A GitHub Actions workflow at [.github/workflows/azure.yml](.github/workflows/azu
 
 ### App Service settings
 
-- Configuration, Application settings: `RESEND_API_KEY`, `BOOKING_TO`, `BOOKING_FROM`.
+- Configuration, Application settings: `RESEND_API_KEY`, `FORM_TO`, `FORM_FROM`.
 - Configuration, General settings: Startup Command `node /home/site/wwwroot/server.js`, HTTPS Only on, Always On on, minimum TLS 1.2.
 - Custom domain and the free managed certificate when the domain is ready.
 
-Until `RESEND_API_KEY` and `BOOKING_TO` are set, booking requests are written to the log stream and the visitor still sees the thank-you page. While the site is served from an `azurewebsites.net` address, server.js adds a noindex header so the staging URL stays out of search results.
+Until `RESEND_API_KEY` and `FORM_TO` are set, booking requests are written to the log stream and the visitor still sees the thank-you page. While the site is served from an `azurewebsites.net` address, server.js adds a noindex header so the staging URL stays out of search results.
 
 ## Environment variables
 

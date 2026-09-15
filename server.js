@@ -5,8 +5,8 @@
 // Environment:
 //   PORT              set by App Service (defaults to 8080 locally)
 //   RESEND_API_KEY    Resend API key
-//   BOOKING_TO        comma-separated recipients for booking requests
-//   BOOKING_FROM      sender, e.g. "Human Code <bookings@humancode.co.uk>"
+//   FORM_TO        comma-separated recipients for booking requests
+//   FORM_FROM      sender, e.g. "Human Code <bookings@humancode.co.uk>"
 //   SITE_ROOT         optional override for the static root (defaults to ./dist)
 
 import http from 'node:http';
@@ -124,13 +124,13 @@ async function sendViaResend(apiKey, message) {
 
 async function deliver(booking, origin) {
   const apiKey = process.env.RESEND_API_KEY;
-  const to = (process.env.BOOKING_TO || '').split(',').map((v) => v.trim()).filter(Boolean);
-  const from = process.env.BOOKING_FROM || 'Human Code <onboarding@resend.dev>';
+  const to = (process.env.FORM_TO || '').split(',').map((v) => v.trim()).filter(Boolean);
+  const from = process.env.FORM_FROM || 'Human Code <onboarding@resend.dev>';
   const notification = renderNotification(booking);
 
   if (!apiKey || to.length === 0) {
     // Not configured: log so nothing is silently lost.
-    console.warn('[book] RESEND_API_KEY / BOOKING_TO not set. Booking request:\n' + notification.text);
+    console.warn('[book] RESEND_API_KEY / FORM_TO not set. Booking request:\n' + notification.text);
     return;
   }
   await sendViaResend(apiKey, { from, to, reply_to: booking.email, ...notification });
