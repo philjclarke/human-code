@@ -1,6 +1,6 @@
-# Build the static site on GitHub and deploy the build plus server.js to
-# Azure App Service. Nothing is built on Azure and no node_modules are shipped:
-# server.js has no dependencies.
+# Optional: build on GitHub and deploy to Azure App Service. Kept as a manual
+# workflow only, because deployments currently go by SFTP (see README). Run it
+# from the Actions tab if CI access to Azure is ever set up.
 #
 # Required in the GitHub repo:
 #   secrets.AZURE_WEBAPP_PUBLISH_PROFILE   from the portal: Overview -> Download publish profile
@@ -11,8 +11,6 @@
 name: Deploy to Azure App Service
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 concurrency:

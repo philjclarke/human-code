@@ -17,34 +17,31 @@ npm run check    # type-check .astro and .ts
 
 The site is a static Astro build served by [server.js](server.js), a dependency-free Node server, on an Azure App Service Web App (Linux, Node 22, North Europe), following the same model as More Money for Schools. The one non-static piece is the booking form: server.js handles `POST /api/book`, validates it, and emails it through Resend's REST API. Nothing runs on Azure that isn't in this repo.
 
-### Deploying
+### Deploying by SFTP
 
-Pushes to `main` run [.github/workflows/azure.yml](.github/workflows/azure.yml), which type-checks, builds, smoke-tests the server and deploys `dist/`, `server/`, `server.js` and `package.json` to the web app. The workflow needs, in the GitHub repo settings:
+Deployments go by SFTP, so the build happens on your machine:
 
-| Where | Name | Value |
-| --- | --- | --- |
-| Secret | `AZURE_WEBAPP_PUBLISH_PROFILE` | From the portal: web app Overview, Download publish profile |
-| Variable | `AZURE_WEBAPP_NAME` | The web app's name |
-| Variable | `SITE_URL` | Canonical URL once the domain exists |
-| Variable | `PUBLIC_GA_MEASUREMENT_ID` | GA4 ID; leave unset to keep analytics off |
+1. Put `SITE_URL` and `PUBLIC_GA_MEASUREMENT_ID` in a local `.env` (copy `.env.example`). They are baked into the build, so set them before building.
+2. Run `npm run package`. It builds the site and assembles a `deploy/` folder containing `dist/`, `server/`, `server.js` and `package.json`. Nothing else is needed on the server: server.js has no dependencies, so there is no `node_modules` to upload.
+3. Upload the *contents* of `deploy/` to the root of `/home/site/wwwroot` (credentials: Deployment Center, FTPS credentials). Replace the existing `dist/` folder rather than merging into it, so stale hashed assets don't accumulate.
+4. First time only: delete Azure's placeholder `hostingstart.html` if it is there.
+5. Restart the app in the portal. Uploads don't take effect until the container restarts.
 
-The GA4 ID is baked in at build time, which is why it lives in GitHub rather than Azure.
+The Kudu console at `https://<app-name>.scm.azurewebsites.net` shows what actually landed on disk, and Log stream shows server.js's output, including booking requests when Resend isn't configured yet.
+
+A GitHub Actions workflow at [.github/workflows/azure.yml](.github/workflows/azure.yml) can do the same build and deploy from CI. It is manual-only and unused unless Azure access is set up for GitHub; the secrets and variables it needs are listed at the top of the file.
 
 ### App Service settings
 
-- Configuration, Application settings: `RESEND_API_KEY`, `BOOKING_TO`, `BOOKING_FROM`, and `SCM_DO_BUILD_DURING_DEPLOYMENT=false`.
+- Configuration, Application settings: `RESEND_API_KEY`, `BOOKING_TO`, `BOOKING_FROM`.
 - Configuration, General settings: Startup Command `node /home/site/wwwroot/server.js`, HTTPS Only on, Always On on, minimum TLS 1.2.
 - Custom domain and the free managed certificate when the domain is ready.
 
 Until `RESEND_API_KEY` and `BOOKING_TO` are set, booking requests are written to the log stream and the visitor still sees the thank-you page. While the site is served from an `azurewebsites.net` address, server.js adds a noindex header so the staging URL stays out of search results.
 
-### Deploying by SFTP instead
-
-Because server.js has no dependencies, the SFTP route also works: run `npm run build` locally and upload `dist/`, `server/`, `server.js` and `package.json` to the root of `/home/site/wwwroot`, then restart the app.
-
 ## Environment variables
 
-See [.env.example](.env.example). Build-time values are GitHub Actions variables; run-time values are App Service application settings.
+See [.env.example](.env.example). Build-time values go in a local `.env` before packaging; run-time values are App Service application settings.
 
 ## Where things live
 
