@@ -134,8 +134,15 @@ async function deliver(booking, origin) {
     return;
   }
   await sendViaResend(apiKey, { from, to, reply_to: booking.email, ...notification });
-  const confirmation = renderConfirmation(booking, origin);
-  await sendViaResend(apiKey, { from, to: booking.email, ...confirmation });
+
+  // The confirmation to the requester is best-effort: the request has reached
+  // the team, so a failure here (e.g. Resend's test sender, which only delivers
+  // to the account owner) must not show the visitor an error.
+  try {
+    await sendViaResend(apiKey, { from, to: booking.email, ...renderConfirmation(booking, origin) });
+  } catch (err) {
+    console.warn('[book] confirmation email not sent:', err.message);
+  }
 }
 
 async function handleBooking(req, res) {
