@@ -6,7 +6,7 @@
 //   PORT              set by App Service (defaults to 8080 locally)
 //   RESEND_API_KEY    Resend API key
 //   FORM_TO        comma-separated recipients for booking requests
-//   FORM_FROM      sender, e.g. "Human Code <bookings@humancode.co.uk>"
+//   FORM_FROM      sender on the verified Resend domain, e.g. "Human Code <bookings@humancode.org.uk>"
 //   SITE_ROOT         optional override for the static root (defaults to ./dist)
 
 import http from 'node:http';
@@ -139,7 +139,7 @@ async function deliver(booking, origin) {
   // the team, so a failure here (e.g. Resend's test sender, which only delivers
   // to the account owner) must not show the visitor an error.
   try {
-    await sendViaResend(apiKey, { from, to: booking.email, ...renderConfirmation(booking, origin) });
+    await sendViaResend(apiKey, { from, to: booking.email, reply_to: to[0], ...renderConfirmation(booking, origin) });
   } catch (err) {
     console.warn('[book] confirmation email not sent:', err.message);
   }

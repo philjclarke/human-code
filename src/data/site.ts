@@ -8,8 +8,8 @@ export const site = {
   description:
     'Practical neurodiversity training that helps organisations build more confident managers, retain good people and improve performance.',
   // TODO(client): confirm final domain, legal entity and contact details.
-  domain: 'humancode.co.uk',
-  email: 'hello@humancode.co.uk',
+  domain: 'humancode.org.uk',
+  email: 'hello@humancode.org.uk',
   phone: '+44 (0)20 0000 0000',
   legalName: 'Human Code Training Ltd',
   registeredAddress: 'Registered office address to be confirmed, United Kingdom',
