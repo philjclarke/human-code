@@ -13,7 +13,7 @@ export const site = {
   phone: '+44 (0)20 0000 0000',
   legalName: 'Human Code Training Ltd',
   registeredAddress: 'Registered office address to be confirmed, United Kingdom',
-  companyNumber: '00000000',
+  companyNumber: '15054013',
   cta: {
     long: 'Book your free 60-minute CEO briefing',
     short: 'Book your free CEO briefing',
