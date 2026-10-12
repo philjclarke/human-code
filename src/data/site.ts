@@ -10,9 +10,9 @@ export const site = {
   // TODO(client): confirm final domain, legal entity and contact details.
   domain: 'humancode.org.uk',
   email: 'hello@humancode.org.uk',
-  phone: '+44 (0)20 0000 0000',
+  phone: '07590 692595',
   legalName: 'Human Code Training Ltd',
-  registeredAddress: 'Registered office address to be confirmed, United Kingdom',
+  registeredAddress: 'Denne Court Oad Street, Hengist Field, Borden, Sittingbourne, Kent, England, ME9 8LT',
   companyNumber: '15054013',
   cta: {
     long: 'Book your free 60-minute CEO briefing',
