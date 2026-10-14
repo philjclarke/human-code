@@ -9,7 +9,7 @@ export const site = {
     'Practical neurodiversity training that helps organisations build more confident managers, retain good people and improve performance.',
   // TODO(client): confirm final domain, legal entity and contact details.
   domain: 'humancode.org.uk',
-  email: 'hello@humancode.org.uk',
+  email: 'ben@humancode.org.uk',
   phone: '07590 692595',
   legalName: 'Human Code Training Ltd',
   registeredAddress: 'Denne Court Oad Street, Hengist Field, Borden, Sittingbourne, Kent, England, ME9 8LT',
