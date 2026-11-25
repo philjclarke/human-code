@@ -43,6 +43,10 @@ Until `RESEND_API_KEY` and `FORM_TO` are set, booking requests are written to th
 
 See [.env.example](.env.example). Build-time values go in a local `.env` before packaging; run-time values are App Service application settings.
 
+## Project log
+
+Decisions, client feedback and operational history are recorded in [docs/PROJECT-LOG.md](docs/PROJECT-LOG.md), with the current open items at the bottom. Append to it whenever something changes that the code alone wouldn't explain.
+
 ## Where things live
 
 - `src/data/site.ts`: prices, CTA labels, navigation, cascade stages, contact details. Change commercial facts here.
